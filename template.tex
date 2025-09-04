@@ -319,6 +319,77 @@ reaction kinetics determine which molecules last long enough to be sampled again
 SDA/GA framework offers a naturalistic model of molecular evolution, one that unifies symbolic 
 cheminformatics with dynamical systems principles.
 
+\section{Chemical SDA/GA Simulation}
+
+\subsection{Methods}
+
+To extend the symbolic SDA/GA framework into the chemical domain, we reused the same minimal simulation loop with only two modifications. First, symbolic string elements were replaced with SMILES fragments drawn from a small set of base compounds (e.g., \texttt{C}, \texttt{CC}, \texttt{O}, \texttt{CO}, etc.), representing a rudimentary pool of prebiotic building blocks. Second, instead of assigning fixed stability values, we introduced a callable stability function $S(p)$ that estimates the persistence of a compound from molecular features. For demonstration purposes, this was implemented as a function of heavy atom count with heuristic boosts for chemically plausible motifs such as carboxylates, esters, and amides. In this formulation, fitness is not supplied externally, but arises from chemical plausibility as encoded in stability, thereby aligning with the SDA principle that selection emerges from persistence rather than externally imposed objectives.  
+
+All other aspects of the algorithm were left unchanged. As in the symbolic case, base fragments were replenished each generation, new compounds were formed through recombination and mutation using BRICS rules, and expiration times were assigned according to the stability function. This allows the chemical simulation to be understood as a natural extension of symbolic SDA, with only minimal changes distinguishing abstract informational dynamics from physical chemical dynamics.  
+
+\subsection{Results}
+
+We ran simulations for 600 generations with 100 interactions per generation and replenishment rate of three. Several metrics were collected to characterize the evolutionary dynamics of the chemical system.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{SDA-chem-entropy.png}
+    \caption{Shannon entropy of the chemical SDA population over 600 generations. Entropy rises sharply as diversity expands, then exhibits oscillations reflecting alternating phases of order and disorder as dominant motifs emerge and collapse.}
+    \label{fig:chem-entropy}
+\end{figure}
+
+Figure~\ref{fig:chem-entropy} shows the entropy trajectory of the chemical population. Entropy initially rises rapidly as new compounds are discovered, then exhibits a pattern of oscillations rather than monotonic decay. These oscillations are consistent with the boom–bust cycles seen in symbolic SDA runs, in which clusters of stable patterns temporarily dominate before being displaced by alternative structures. The persistence of oscillations indicates that stability-driven selection is sufficient to generate long-lived cycles of order and disorder.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{SDA-chem-diversity.png}
+    \caption{Unique compound count over time. Diversity rises steeply in early generations and stabilizes around 100–140 species, with oscillations that closely track entropy fluctuations.}
+    \label{fig:chem-diversity}
+\end{figure}
+
+The diversity of unique compounds, shown in Figure~\ref{fig:chem-diversity}, follows a similar trajectory. After a rapid increase in early generations, the number of distinct compounds stabilizes at around 100–140, fluctuating in tandem with entropy. This parallelism reinforces the interpretation that entropy oscillations correspond to turnover in chemical diversity, where new motifs periodically displace previously dominant ones.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{SDA-chem-novel.png}
+    \caption{Fraction of novel compounds (not in the initial fragment pool) over time. By generation 600, approximately 75\% of the population consists of novel compounds, demonstrating continuous innovation through recombination and mutation.}
+    \label{fig:chem-novel}
+\end{figure}
+
+Figure~\ref{fig:chem-novel} quantifies the share of novel compounds relative to the base fragment pool. The fraction of novel structures rises steadily and plateaus near 75\%, showing that recombination and mutation efficiently explore new regions of chemical space. The persistence of this fraction demonstrates that novelty is not transient but sustained across generations, as stable new motifs accumulate and contribute to ongoing evolutionary dynamics.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{SDA-chem-rank.png}
+    \caption{Rank–abundance distribution of compounds in the final population (log–log scale). The heavy-tailed form, with a few highly abundant compounds and many rare ones, resembles ecological species-abundance distributions.}
+    \label{fig:chem-rank}
+\end{figure}
+
+The rank–abundance distribution in Figure~\ref{fig:chem-rank} shows a heavy-tailed profile typical of complex adaptive systems. A few highly abundant compounds dominate, while many rare ones persist at low frequency. This mirrors species-abundance curves in ecology, further underscoring the natural GA-like properties of SDA when applied to chemical space.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{SDA-chem-compounds.png}
+    \caption{Representative structures of the twelve most abundant compounds at the end of the simulation. Compounds exhibit chemically plausible motifs such as esters, hydroxyl groups, and amide-like linkages, despite the use of a simple heuristic stability function.}
+    \label{fig:chem-compounds}
+\end{figure}
+
+The most persistent compounds are depicted in Figure~\ref{fig:chem-compounds}. Even though the stability function was a simplified proxy, many of the top-ranking compounds exhibit motifs consistent with chemical plausibility, including esters, hydroxylated carbons, and amide-like linkages. Their emergence highlights that stability-driven persistence alone can generate complex and structured chemistry from a small base set.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{SDA-chem-compound-hist.png}
+    \caption{Histogram of the twelve most frequent compounds, expressed both in counts and relative percentages. A few compounds achieve dominance while others remain at intermediate frequencies, producing a heterogeneous but structured population.}
+    \label{fig:chem-compound-hist}
+\end{figure}
+
+The histogram in Figure~\ref{fig:chem-compound-hist} further illustrates the dominance of a small number of compounds. The leading compound comprises nearly 27\% of the population, with subsequent compounds contributing smaller but still significant shares. This uneven distribution aligns with the rank–abundance profile and demonstrates how stability-driven selection naturally produces heterogeneity in chemical ecosystems.  
+
+\subsection{Interpretation}
+
+Taken together, these results demonstrate that the SDA framework, when instantiated with chemical fragments, behaves as a natural genetic algorithm. At the symbolic level, the system consists of nothing more than recombination, mutation, replenishment, and stability-driven expiration. Yet when applied to chemical fragments, these same operations generate persistent novelty, heavy-tailed abundance distributions, and oscillatory dynamics of entropy and diversity.  
+
+Crucially, fitness is not an externally imposed function, as in conventional GAs, but emerges from the persistence of chemically plausible structures. In the symbolic case this was pre-specified through a lookup table of stability values; in the chemical case it is calculated implicitly by the environment through the stability function. This distinction highlights the dual nature of SDA: it is simultaneously a model of symbolic information dynamics and a plausible mechanistic account of how chemistry could self-organize into increasingly complex structures, ultimately giving rise to a biosphere.  
 
 
 
