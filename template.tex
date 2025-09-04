@@ -331,69 +331,87 @@ All other aspects of the algorithm were left unchanged. As in the symbolic case,
 
 \subsection{Results}
 
-We ran simulations for 600 generations with 100 interactions per generation and replenishment rate of three. Several metrics were collected to characterize the evolutionary dynamics of the chemical system.  
+We ran chemical SDA simulations for 1000 generations with 200 interactions per generation and a replenishment rate of five. The results reveal how stability-driven persistence produces skewed population structures, motif-level evolution, and system-wide dynamics that parallel both genetic algorithms (GAs) and ecological systems.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{SDA-chem-hist.png}
+    \caption{Histogram of the twelve most frequent compounds at generation 1000, expressed as counts and percentages. One compound accounts for $\sim$54\% of the population, with the next runner-up at $\sim$18\%.}
+    \label{fig:chem-compound-hist}
+\end{figure}
+
+Figure~\ref{fig:chem-compound-hist} shows the distribution of the twelve most abundant compounds at generation 1000. A single acetal-bearing motif (CCCC(O)C(O)C(O)(OC(O)OC)C(N)CCC) dominates over half of the population ($\sim$54\%), while the second most frequent compound---a recursive oligomer in which the polyol core is extended by an additional C(N)CCC branch---accounts for 18\%. The third and fourth most frequent motifs (at 7\% and 6\%, respectively) are close structural relatives: one retains the O–C(=O)–O acetal fragment in a simpler form, while the other incorporates an amide-like NC(O) substitution into the same polyol backbone. Together, these four scaffolds account for over 85\% of the entire pool.
+
+From a GA perspective, this concentration illustrates how roulette-wheel selection emerges naturally from persistence: once a motif survives longer, it contributes disproportionately to the parent pool and thus amplifies its frequency. From a chemical perspective, the winners all share the same polyol–amine backbone, differing only in whether the substituent is acetal-like, recursive, or amide-like. In other words, the system converges on a GA schema (the hydroxylated carbon scaffold with an appended amine) and explores variations within that schema, selecting for those with the greatest stability. The dominance of these few compounds therefore reflects both the GA principle of schema preservation and the chemical principle that stable substituents accumulate over evolutionary time.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{SDA-chem-top-evo.png}
+    \caption{Evolution of the two top motifs across 200, 600, and 1000 generations. Early competition between NCN- and acetal-bearing variants gives way to long-term fixation of a single stable scaffold.}
+    \label{fig:chem-top-evo}
+\end{figure}
+
+The trajectories of the two leading motifs are shown in Figure~\ref{fig:chem-top-evo}. At generation 200, the population is split between two scaffolds: an NCN-bearing polyol (17.5\%) and a related acetal-containing variant (14.5\%). Both share the same hydroxylated carbon backbone with an appended amine chain, differing only in the functional group attached to the central scaffold.  
+
+By generation 600, the competition has shifted. A recursive oligomer that elaborates the NCN branch with an additional polyol–amine extension rises to 23.7\% of the pool, while the acetal-bearing variant persists at 19.5\%. This phase illustrates how SDA dynamics preserve a common schema while exploring more complex recombinants.  
+
+By generation 1000, however, the balance tips decisively. The simpler acetal-bearing scaffold dominates nearly half the population (45.1\%), while the more elaborate recursive oligomer declines to 15.0\%. From a GA perspective, this trajectory illustrates schema competition: multiple variants arise from a shared template, but persistence imbalances weight selection toward those with the most favorable stability. From a chemical perspective, the result shows that moderate substituents (acetal-like O–C(=O)–O groups) can outcompete bulkier recursive elaborations, leading to convergence on motifs that maximize both stability and generativity. The outcome thus exemplifies the SDA principle that evolutionary search favors motifs which balance structural richness with long-term persistence.
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{SDA-chem-entropy.png}
-    \caption{Shannon entropy of the chemical SDA population over 600 generations. Entropy rises sharply as diversity expands, then exhibits oscillations reflecting alternating phases of order and disorder as dominant motifs emerge and collapse.}
+    \caption{Shannon entropy of the chemical SDA population over 1000 generations. Entropy rises sharply as diversity expands, then declines steadily as dominant motifs consolidate.}
     \label{fig:chem-entropy}
 \end{figure}
 
-Figure~\ref{fig:chem-entropy} shows the entropy trajectory of the chemical population. Entropy initially rises rapidly as new compounds are discovered, then exhibits a pattern of oscillations rather than monotonic decay. These oscillations are consistent with the boom–bust cycles seen in symbolic SDA runs, in which clusters of stable patterns temporarily dominate before being displaced by alternative structures. The persistence of oscillations indicates that stability-driven selection is sufficient to generate long-lived cycles of order and disorder.  
+Entropy dynamics, shown in Figure~\ref{fig:chem-entropy}, explain this consolidation. Shannon entropy increases rapidly during early exploration as new compounds are discovered, but after peaking near generation 150--200, it declines monotonically. The decline corresponds to the narrowing of the population into a smaller set of persistent motifs, consistent with selection pruning the search space.  
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{SDA-chem-diversity.png}
-    \caption{Unique compound count over time. Diversity rises steeply in early generations and stabilizes around 100–140 species, with oscillations that closely track entropy fluctuations.}
+    \caption{Unique compound count over time. Diversity peaks early at over 200 unique species, then collapses to $\sim$50 by the end of the run.}
     \label{fig:chem-diversity}
 \end{figure}
 
-The diversity of unique compounds, shown in Figure~\ref{fig:chem-diversity}, follows a similar trajectory. After a rapid increase in early generations, the number of distinct compounds stabilizes at around 100–140, fluctuating in tandem with entropy. This parallelism reinforces the interpretation that entropy oscillations correspond to turnover in chemical diversity, where new motifs periodically displace previously dominant ones.  
+Figure~\ref{fig:chem-diversity} shows that diversity follows the same trajectory. The number of distinct compounds rises steeply in the first 100 generations, reaching over 200 species, but collapses thereafter as stability-driven persistence favors only a subset of motifs. By generation 1000, roughly 50 species remain, with the majority of the population concentrated in the top two scaffolds.  
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{SDA-chem-novel.png}
-    \caption{Fraction of novel compounds (not in the initial fragment pool) over time. By generation 600, approximately 75\% of the population consists of novel compounds, demonstrating continuous innovation through recombination and mutation.}
+    \caption{Fraction of novel compounds (not in the initial fragment pool) over time. Novelty rapidly overtakes the base pool, stabilizing above 80\% of the population.}
     \label{fig:chem-novel}
 \end{figure}
 
-Figure~\ref{fig:chem-novel} quantifies the share of novel compounds relative to the base fragment pool. The fraction of novel structures rises steadily and plateaus near 75\%, showing that recombination and mutation efficiently explore new regions of chemical space. The persistence of this fraction demonstrates that novelty is not transient but sustained across generations, as stable new motifs accumulate and contribute to ongoing evolutionary dynamics.  
+Novelty relative to the base fragment set is quantified in Figure~\ref{fig:chem-novel}. The fraction of novel compounds rises steeply and surpasses 80\% by generation 200, remaining stable thereafter. This indicates that evolutionary dynamics are driven by novel recombinations rather than simple recycling of the initial pool. Novelty is thus not transient but sustained, consistent with SDA’s prediction of open-ended exploration.  
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{SDA-chem-rank.png}
-    \caption{Rank–abundance distribution of compounds in the final population (log–log scale). The heavy-tailed form, with a few highly abundant compounds and many rare ones, resembles ecological species-abundance distributions.}
+    \caption{Rank–abundance distribution of compounds in the final population (log–log scale). A heavy-tailed distribution emerges, with a few highly abundant motifs and many rare species.}
     \label{fig:chem-rank}
 \end{figure}
 
-The rank–abundance distribution in Figure~\ref{fig:chem-rank} shows a heavy-tailed profile typical of complex adaptive systems. A few highly abundant compounds dominate, while many rare ones persist at low frequency. This mirrors species-abundance curves in ecology, further underscoring the natural GA-like properties of SDA when applied to chemical space.  
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{SDA-chem-compounds.png}
-    \caption{Representative structures of the twelve most abundant compounds at the end of the simulation. Compounds exhibit chemically plausible motifs such as esters, hydroxyl groups, and amide-like linkages, despite the use of a simple heuristic stability function.}
-    \label{fig:chem-compounds}
-\end{figure}
-
-The most persistent compounds are depicted in Figure~\ref{fig:chem-compounds}. Even though the stability function was a simplified proxy, many of the top-ranking compounds exhibit motifs consistent with chemical plausibility, including esters, hydroxylated carbons, and amide-like linkages. Their emergence highlights that stability-driven persistence alone can generate complex and structured chemistry from a small base set.  
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{SDA-chem-compound-hist.png}
-    \caption{Histogram of the twelve most frequent compounds, expressed both in counts and relative percentages. A few compounds achieve dominance while others remain at intermediate frequencies, producing a heterogeneous but structured population.}
-    \label{fig:chem-compound-hist}
-\end{figure}
-
-The histogram in Figure~\ref{fig:chem-compound-hist} further illustrates the dominance of a small number of compounds. The leading compound comprises nearly 27\% of the population, with subsequent compounds contributing smaller but still significant shares. This uneven distribution aligns with the rank–abundance profile and demonstrates how stability-driven selection naturally produces heterogeneity in chemical ecosystems.  
+Finally, the rank–abundance distribution in Figure~\ref{fig:chem-rank} shows that the final population adopts a heavy-tailed form. A small number of motifs dominate by orders of magnitude, while a long tail of rare compounds persists at low frequency. This mirrors species-abundance distributions in ecology and demonstrates that SDA naturally produces structured, law-like abundance patterns when applied to chemistry.  
 
 \subsection{Interpretation}
 
-Taken together, these results demonstrate that the SDA framework, when instantiated with chemical fragments, behaves as a natural genetic algorithm. At the symbolic level, the system consists of nothing more than recombination, mutation, replenishment, and stability-driven expiration. Yet when applied to chemical fragments, these same operations generate persistent novelty, heavy-tailed abundance distributions, and oscillatory dynamics of entropy and diversity.  
+Taken together, these results show that chemical SDA recapitulates the dynamics of a natural GA. Population skew arises spontaneously from persistence imbalances: compounds that survive longer contribute disproportionately to the parent pool, creating effective roulette-wheel selection without an explicit fitness function. This mechanism is evident in the histogram and motif trajectories (Figures~\ref{fig:chem-compound-hist}, \ref{fig:chem-top-evo}), which show oligopolistic dominance and scaffold-level competition.  
 
-Crucially, fitness is not an externally imposed function, as in conventional GAs, but emerges from the persistence of chemically plausible structures. In the symbolic case this was pre-specified through a lookup table of stability values; in the chemical case it is calculated implicitly by the environment through the stability function. This distinction highlights the dual nature of SDA: it is simultaneously a model of symbolic information dynamics and a plausible mechanistic account of how chemistry could self-organize into increasingly complex structures, ultimately giving rise to a biosphere.  
+System-level traces (Figures~\ref{fig:chem-entropy}--\ref{fig:chem-novel}) explain how this outcome emerges: entropy and diversity expand initially but collapse as selection narrows the space, while novelty remains high as new motifs continually replace base fragments. The final rank–abundance distribution (Figure~\ref{fig:chem-rank}) underscores that these dynamics are not idiosyncratic but follow statistical patterns seen across complex adaptive systems.  
 
-Taken together, these results support the hypothesis that roulette-wheel selection emerges from persistence imbalances alone: when patterns (or molecules) persist in proportion to their stability, uniform parent sampling becomes implicitly fitness-weighted, yielding GA-like search dynamics without an explicit fitness function.
+Even with a simplified stability function, the most abundant compounds exhibit chemically plausible motifs such as polyols, acetals, and amine substituents. Their persistence is not arbitrary but arises from their ability to withstand turnover in the generative environment. These findings support the SDA hypothesis that stability alone, when coupled with recombination and mutation, can drive both the generation of novelty and the convergence on structured, high-complexity attractors—plausibly capturing the dynamics that underlie prebiotic chemical evolution.  
+
+
+\subsection{Equilibrium Models versus Selection-Driven Evolution}
+
+It is useful to contrast these results with equilibrium-based analyses such as those presented by MAK. In order to render the governing equations linear and analytically tractable, equilibrium models typically assume constant reaction rates and well-mixed dynamics. This assumption ensures mathematical stability but also suppresses the very features that drive open-ended evolution. With constant rates, all species are treated as equivalent participants in a Markovian flow, and the long-term behavior is dominated by equilibrium concentrations determined by stoichiometry rather than by persistence differentials. In such a setting, once equilibrium is reached, no further directional change occurs.
+
+By contrast, the SDA framework does not impose constant rates or equilibrium conditions. Instead, each compound’s effective lifetime depends on its stability, so that turnover is inherently non-uniform. This creates persistence imbalances: more stable motifs accumulate, while less stable ones vanish, skewing the population distribution and weighting the parent-selection process. As demonstrated in the simulations above, this skew is precisely what produces evolutionary search dynamics. Entropy and diversity expand initially but then collapse as a few stable motifs dominate, novelty is continually generated through recombination, and population abundance assumes a heavy-tailed form reminiscent of ecological communities. None of these features emerge from an equilibrium analysis with constant rates, because such models erase the role of selection in shaping the system’s trajectory.
+
+In short, equilibrium approaches such as MAK characterize the static end-state of a reaction network, whereas SDA captures its inherently evolutionary nature. What appears in equilibrium theory as a steady-state distribution is, in the SDA view, the transient outcome of continual competition, turnover, and selection. This distinction highlights why stability-driven selection is indispensable for understanding how chemical systems can move beyond equilibrium chemistry toward open-ended evolution.
+
+
 
 \section{Open-Endedness and Computation}
 
