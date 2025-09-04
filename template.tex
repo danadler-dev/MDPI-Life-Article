@@ -325,6 +325,8 @@ cheminformatics with dynamical systems principles.
 
 To extend the symbolic SDA/GA framework into the chemical domain, we reused the same minimal simulation loop with only two modifications. First, symbolic string elements were replaced with SMILES fragments drawn from a small set of base compounds (e.g., \texttt{C}, \texttt{CC}, \texttt{O}, \texttt{CO}, etc.), representing a rudimentary pool of prebiotic building blocks. Second, instead of assigning fixed stability values, we introduced a callable stability function $S(p)$ that estimates the persistence of a compound from molecular features. For demonstration purposes, this was implemented as a function of heavy atom count with heuristic boosts for chemically plausible motifs such as carboxylates, esters, and amides. In this formulation, fitness is not supplied externally, but arises from chemical plausibility as encoded in stability, thereby aligning with the SDA principle that selection emerges from persistence rather than externally imposed objectives.  
 
+Molecules were represented as SMILES strings and manipulated using the RDKit cheminformatics toolkit \cite{landrum2006rdkit}. Recombination was implemented through BRICS-based fragmentation and reassembly \cite{degen2008art}. Our approach aligns with recent methodological surveys on best practices for genetic algorithms in molecular discovery \cite{janet2023bestpractices}.
+
 All other aspects of the algorithm were left unchanged. As in the symbolic case, base fragments were replenished each generation, new compounds were formed through recombination and mutation using BRICS rules, and expiration times were assigned according to the stability function. This allows the chemical simulation to be understood as a natural extension of symbolic SDA, with only minimal changes distinguishing abstract informational dynamics from physical chemical dynamics.  
 
 \subsection{Results}
@@ -484,6 +486,19 @@ Chem. Sci. 2019, 10, 3567--3572.
 Yoshikawa, N.; Terayama, K.; Sumita, M.; Homma, T.; Oono, K.; Tsuda, K.
 \textit{Population-based de novo molecule generation, using grammatical evolution.}
 Chem. Lett. 2018, 47, 1431--1434.
+
+\bibitem{landrum2006rdkit}
+Landrum, G. (2006). \textit{RDKit: Open-source cheminformatics}. Available at: \url{http://www.rdkit.org}.
+
+\bibitem{degen2008art}
+Degen, J., Wegscheid-Gerlach, C., Zaliani, A., Rarey, M. (2008).
+\textit{On the art of compiling and using ‘drug-like’ chemical fragment spaces}.
+\textit{ChemMedChem}, 3(10), 1503–1507. https://doi.org/10.1002/cmdc.200800178
+
+\bibitem{janet2023bestpractices}
+Janet, J. P., Duan, C., Yang, T., Kulik, H. J. (2023).
+\textit{Determining best practices for using genetic algorithms in molecular discovery}.
+\textit{Journal of Chemical Physics}, 159(9), 091501. https://doi.org/10.1063/5.0158336
 
 
 \end{thebibliography}
