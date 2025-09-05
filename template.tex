@@ -412,6 +412,26 @@ By contrast, the SDA framework does not impose constant rates or equilibrium con
 In short, equilibrium approaches such as MAK characterize the static end-state of a reaction network, whereas SDA captures its inherently evolutionary nature. What appears in equilibrium theory as a steady-state distribution is, in the SDA view, the transient outcome of continual competition, turnover, and selection. This distinction highlights why stability-driven selection is indispensable for understanding how chemical systems can move beyond equilibrium chemistry toward open-ended evolution.
 
 
+\subsection{Comparison to Supervised Learning and Genetic Programming}  
+
+It is also important to distinguish chemical SDA from supervised learning and from conventional genetic algorithms or genetic programming systems. In supervised machine learning, the search is explicitly directed toward minimizing an externally defined loss function. In many GA and GP implementations, the search is likewise steered by a user-specified fitness function that encodes the target solution. By contrast, the chemical SDA-GA has no external objective: it is not guided toward reproducing a particular pattern or solving a predefined optimization problem. Instead, its dynamics are akin to reinforcement learning in an emergent environment, where the only “reward” signal is persistence. Molecules that survive longer contribute more offspring, and the evolving environment itself continuously reshapes which motifs are viable. The result is an open-ended evolutionary process in which populations adapt toward more stable, better-fitting solutions, not because such solutions were prespecified, but because they emerge as the natural consequence of persistence imbalances in a stochastic chemical landscape.
+
+\subsection{Emergence of a Natural Genetic Algorithm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{SDA-top-down.png}
+    \caption{Feedback structure underlying chemical SDA dynamics. Base elements interact randomly to form compounds. Compounds that persist contribute more to the population, biasing the probability distribution. This distribution in turn guides future interactions, closing a feedback loop. The result is emergent roulette-wheel selection.}
+    \label{fig:top-down}
+\end{figure}
+
+The feedback structure shown in Figure~\ref{fig:top-down} provides a mechanistic explanation for how GA-like search emerges spontaneously in chemical SDA. In conventional genetic algorithms, roulette-wheel selection is imposed externally: the algorithm samples parents in proportion to a user-defined fitness function. In SDA, no such programmer is required. Instead, stability imbalances ensure that some compounds persist longer than others. Persistence in turn biases the probability distribution over the population, which then guides future interactions. 
+
+This feedback loop closes the causal chain: compounds shape the distribution, the distribution shapes sampling, and sampling determines which compounds are likely to appear again. In effect, selection pressure is not imposed top–down but emerges bottom–up from persistence differences within the population. The result is indistinguishable in practice from roulette-wheel selection, yet it arises naturally from the dynamics of the system.
+
+This perspective also clarifies the often-misused notion of “top-down causation.” There is no need to posit a mystical programmer or abstract force directing the search. What appears as top–down influence of the probability distribution on individual elements is mechanistically explained by the accumulation of persistence imbalances at the population level. Stability alone suffices to generate the feedback necessary for open-ended, GA-like evolution.
+
+
 
 \section{Open-Endedness and Computation}
 
