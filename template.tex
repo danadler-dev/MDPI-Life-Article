@@ -105,9 +105,8 @@ The pattern interaction operation, denoted by $\oplus$, is defined as a string c
 
 \begin{algorithm}[H]
 \caption{SDA System Simulation}
-\footnotesize
 \begin{algorithmic}[1]
-\REQUIRE Base elements $E$, stability function $S$, replenishment rates $R$, interaction count $I$, generations $T$
+\REQUIRE Base elements $E$, stability $S$, replenish $R$, interactions $I$, generations $T$
 \ENSURE Pattern population evolution over $T$ generations
 \STATE Initialize population with base elements
 \FOR{$t = 1$ to $T$}
@@ -238,6 +237,28 @@ traditional solution techniques based on eigenfunctions and steady-state
 distributions are not directly applicable, underscoring the novelty of the SDA 
 approach.
 
+\subsection{Symbolic Simulation Model Parameters}
+
+All symbolic SDA and Unconstrained simulations below used a common set of parameters. The base elements are $A$, $B$, $C$.
+Each generation included
+a replenishment of 5 base elements and 100 random pairwise
+interactions. In the unconstrained simulations, all resulting patterns had the same stability of 1 generation. For the SDA simulations, 
+stability values were assigned to patterns according to the
+function:
+
+\begin{equation}
+S(p) =
+\begin{cases}
+100, & \text{if } p = \text{ABCABA} \\
+50, & \text{if } p \in \{\text{ABA, ABC}\} \\
+30, & \text{if } p \in \{\text{AB, BC}\} \\
+1, & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+These parameters were fixed across all experiments, ensuring
+that observed differences arose from the interventions rather than changes in
+the baseline setup.
 
 \subsection{Simulation Results}
 
@@ -263,34 +284,38 @@ the pattern distribution at generation t measured in bits relative to the uncons
 In the concatenation-based SDA, while the average entropy goes down from $\sim6$ bits to $\sim4$ bits, its trajectories often exhibit oscillations. These arise because concatenation tends to build large, synchronized cohorts of similar long motifs, which expire at nearly the same time. When such a cohort collapses, replenished base elements briefly increase diversity and entropy before new dominant motifs emerge, creating a characteristic boom–bust cycle. In contrast, in the recombination-based SDA/GA, entropy decreases more smoothly to $\sim3$ bits without oscillations. Recombination produces mosaic offspring with staggered lifetimes, desynchronizing expirations and damping collective turnover. The result is a more monotonic entropy collapse toward a skewed distribution anchored by stable motifs.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{SDA-concat-entropy.png}
-    \caption{Entropy dynamics in the concatenation-based SDA system. Entropy decreases overall but exhibits oscillatory boom–bust cycles due to synchronized expiration of long motifs.}
+\centering
+\subfloat[\centering Concatenation-based SDA]{
+    \includegraphics[width=0.45\textwidth]{SDA-concat-entropy.png}
     \label{fig:concat-entropy}
+}
+\hfill
+\subfloat[\centering Recombination-based SDA/GA]{
+    \includegraphics[width=0.45\textwidth]{SDA-GA-entropy.png}
+    \label{fig:ga-entropy}
+}
+\caption{Entropy dynamics under different operators. (\textbf{a}) Concatenation-based SDA shows oscillatory boom–bust cycles due to synchronized expiration of long motifs. (\textbf{b}) Recombination-based SDA/GA shows smoother entropy decline, as recombination desynchronizes expirations.}
+\label{fig:entropy-comparison}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{SDA-GA-entropy.png}
-    \caption{Entropy dynamics in the recombination-based SDA/GA system. Entropy decreases smoothly without oscillations, as recombination desynchronizes expirations.}
-    \label{fig:ga-entropy}
-\end{figure}
 
 Together, these results demonstrate that stability-driven assembly robustly yields emergent selection pressure and entropy reduction under both concatenation and recombination operators. The choice of interaction operator primarily shapes the dynamical form of convergence: oscillatory cycles under concatenation versus smooth decline under recombination.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{SDA-concat-diversity.png}
-    \caption{Pattern diversity in the concatenation-based SDA. Diversity oscillates in tandem with entropy, reflecting boom--bust cycles of synchronized motif turnover.}
+\centering
+\subfloat[\centering Concatenation-based SDA]{
+    \includegraphics[width=0.45\textwidth]{SDA-concat-diversity.png}
     \label{fig:concat-diversity}
+}
+\hfill
+\subfloat[\centering Recombination-based SDA/GA]{
+    \includegraphics[width=0.45\textwidth]{SDA-GA-diversity.png}
+    \label{fig:ga-diversity}
+}
+\caption{Pattern diversity under different operators. (\textbf{a}) Concatenation-based SDA shows oscillations, reflecting synchronized motif turnover and boom--bust dynamics. (\textbf{b}) Recombination-based SDA/GA shows steadily rising diversity, indicating continuous generation of low-frequency variants.}
+\label{fig:diversity-comparison}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{SDA-GA-diversity.png}
-    \caption{Pattern diversity in the recombination-based SDA/GA. Diversity steadily rises toward unconstrained levels, indicating continuous generation of low-frequency variants.}
-    \label{fig:ga-diversity}
-\end{figure}
 
 The unique pattern diversity results in Figures~\ref{fig:concat-diversity} and~\ref{fig:ga-diversity} highlight the exploration--exploitation tradeoff. 
 In concatenation-based SDA, exploration of pattern space is intermittent: 
@@ -308,10 +333,7 @@ emerging naturally without an explicit fitness function.
 We also tested the effect of introducing low-probability, single-site mutations during recombination. 
 These mutations serve as a simple model of stochastic perturbations such as copying errors or 
 diffusion events. As expected, mutation did not qualitatively alter the dynamics: entropy still 
-collapsed and high-stability motifs remained dominant. The principal effect was a modest increase 
-in diversity, with rare variants persisting slightly longer. Importantly, mutation did not reintroduce 
-oscillations into the GA case nor disrupt the overall reduction in entropy, confirming that the 
-emergent selection mechanism is robust to stochastic noise.
+collapsed and high-stability motifs remained dominant. Mutations did not disrupt the overall reduction in entropy, confirming that the emergent selection mechanism is robust to stochastic noise.
 
 \section{Genetic Algorithms and Natural Genetic Algorithms}
 
@@ -557,40 +579,40 @@ By generation 1000, however, the balance tips decisively. The simpler ester-like
 
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{SDA-chem-entropy.png}
-    \caption{Shannon entropy of the chemical SDA population over 1000 generations. Entropy rises sharply as diversity expands, then declines steadily as dominant motifs consolidate.}
+\centering
+\subfloat[\centering Entropy dynamics]{
+    \includegraphics[width=0.45\textwidth]{SDA-chem-entropy.png}
     \label{fig:chem-entropy}
-\end{figure}
-
-Entropy dynamics, shown in Figure~\ref{fig:chem-entropy}, explain this consolidation. Shannon entropy increases rapidly during early exploration as new compounds are discovered, but after peaking near generation 150--200, it declines monotonically. The decline corresponds to the narrowing of the population into a smaller set of persistent motifs, consistent with selection pruning the search space.  
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{SDA-chem-diversity.png}
-    \caption{Unique compound count over time. Diversity peaks early at over 200 unique species, then collapses to $\sim$50 by the end of the run.}
+}
+\hfill
+\subfloat[\centering Diversity dynamics]{
+    \includegraphics[width=0.45\textwidth]{SDA-chem-diversity.png}
     \label{fig:chem-diversity}
+}
+\caption{System-level traces of chemical SDA. (\textbf{a}) Shannon entropy rises sharply as new compounds appear, then declines steadily as dominant motifs consolidate. (\textbf{b}) Unique compound diversity follows a parallel trajectory, peaking at over 200 species before collapsing to $\sim$50 by the end of the run.}
+\label{fig:chem-entropy-diversity}
 \end{figure}
 
-Figure~\ref{fig:chem-diversity} shows that diversity follows the same trajectory. The number of distinct compounds rises steeply in the first 100 generations, reaching over 200 species, but collapses thereafter as stability-driven persistence favors only a subset of motifs. By generation 1000, roughly 50 species remain, with the majority of the population concentrated in the top two scaffolds.  
+Entropy and diversity dynamics, shown in Figure~\ref{fig:chem-entropy-diversity}, both trace the system’s consolidation. During the first 100–200 generations, entropy rises and diversity expands to over 200 distinct compounds as exploration dominates. Thereafter, both measures decline in parallel: entropy falls steadily while diversity collapses to about 50 species by generation 1000, with the vast majority of the population concentrated in just two scaffolds. Together these trends show how stability-driven persistence prunes the search space, channeling the system toward a narrowed set of long-lived motifs.
+
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{SDA-chem-novel.png}
-    \caption{Fraction of novel compounds (not in the initial fragment pool) over time. Novelty rapidly overtakes the base pool, stabilizing above 80\% of the population.}
+\centering
+\subfloat[\centering Novelty over time]{
+    \includegraphics[width=0.45\textwidth]{SDA-chem-novel.png}
     \label{fig:chem-novel}
-\end{figure}
-
-Novelty relative to the base fragment set is quantified in Figure~\ref{fig:chem-novel}. The fraction of novel compounds rises steeply and surpasses 80\% by generation 200, remaining stable thereafter. This indicates that evolutionary dynamics are driven by novel recombinations rather than simple recycling of the initial pool. Novelty is thus not transient but sustained, consistent with SDA’s prediction of open-ended exploration.  
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{SDA-chem-rank.png}
-    \caption{Rank–abundance distribution of compounds in the final population (log–log scale). A heavy-tailed distribution emerges, with a few highly abundant motifs and many rare species.}
+}
+\hfill
+\subfloat[\centering Rank--abundance distribution]{
+    \includegraphics[width=0.45\textwidth]{SDA-chem-rank.png}
     \label{fig:chem-rank}
+}
+\caption{Novelty and abundance structure in chemical SDA. (\textbf{a}) Fraction of novel compounds (not present in the initial fragment pool) over time. Novelty rapidly overtakes the base pool and stabilizes above 80\%. (\textbf{b}) Rank--abundance distribution at generation 1000 (log--log scale), showing a heavy-tailed form where a few motifs dominate while many persist at low frequency.}
+\label{fig:chem-novel-rank}
 \end{figure}
 
-Finally, the rank–abundance distribution in Figure~\ref{fig:chem-rank} shows that the final population adopts a heavy-tailed form. A small number of motifs dominate by orders of magnitude, while a long tail of rare compounds persists at low frequency. This mirrors species-abundance distributions in ecology and demonstrates that SDA naturally produces structured, law-like abundance patterns when applied to chemistry.  
+Novelty and abundance structure are summarized in Figure~\ref{fig:chem-novel-rank}. The fraction of novel compounds rises steeply and surpasses 80\% by generation 200, remaining stable thereafter. This shows that evolutionary dynamics are driven by new recombinations rather than simple recycling of the initial pool, making novelty a sustained rather than transient feature. At the same time, the final population adopts a heavy-tailed rank--abundance distribution: a small number of motifs dominate by orders of magnitude, while a long tail of rare compounds persists at low frequency. Together, these results demonstrate that SDA dynamics not only sustain open-ended exploration but also generate structured, law-like abundance patterns closely analogous to those observed in ecological systems.
+
 
 \subsection{Interpretation}
 
