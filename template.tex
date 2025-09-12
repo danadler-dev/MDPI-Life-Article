@@ -546,49 +546,35 @@ while recombinations join fragments from different parents to generate novel mot
 
 Note that some of these mutations and recombinations do not correspond to single-step reactions in real chemistry and, in practice, may require multistep synthesis pathways, catalysts, or additional energy inputs. In the SDA framework, however, they are abstracted into single operators in order to isolate the role of persistence bias and population dynamics, leaving mechanistic details to future, more chemically specific implementations.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{SDA-Chem.png}
+    \caption{Schematic of the SDA/GA loop instantiated in chemical symbol space. 
+    The population is replenished and expired each generation, with chemical 
+    stability values ($S$) driving the relative abundance of fragments such as 
+    ethanol-like \texttt{CCO} ($S=20$), carbonyl \texttt{C=O} ($S=15$), and amine 
+    \texttt{NH$_2$} ($S=10$). The resulting abundance distribution biases 
+    roulette-wheel selection toward more persistent motifs (here \texttt{CCO} 
+    and \texttt{C=O}). Interactions occur through chemical recombination, for 
+    example \texttt{CCO + C=O $\to$ CCOC=O}, producing more stable compounds 
+    ($S=50$) that dominate future populations. The feedback loop illustrates how 
+    persistence imbalances alone can generate effective selection dynamics in 
+    chemical populations.}
+    \label{fig:sda-chem-loop}
+\end{figure}
 
-\subsection{Patterns as Molecules}
-Patterns correspond to molecules represented in SMILES notation. Recombination is implemented 
-using BRICS fragmentation and reassembly, ensuring that new molecules respect basic valence 
-rules and avoid chemically implausible bonds. Mutation is modeled as single-site perturbations, 
-analogous to copying errors or diffusion-induced reactions, again constrained by chemical 
-plausibility.
+This schematic illustrates the SDA/GA cycle instantiated in chemical space. As in the symbolic ABC case, persistence bias amplifies the abundance of more stable motifs, which then dominate recombination events and seed increasingly complex products. The point is not to capture mechanistic detail but to show how stability values alone, when coupled with stochastic assembly and replenishment, are sufficient to generate skewed population structures and emergent selection dynamics. In this sense, chemical SDA/GA provides a bridge between abstract population models and realistic prebiotic chemistry.
 
-\subsection{Stability as Persistence}
-In the chemical domain, the stability function $S(p)$ is determined by the environment rather 
-than by the algorithm designer. For organic molecules, persistence may reflect compliance with 
-the octet rule, avoidance of strained substructures, thermodynamic feasibility, or kinetic 
-barriers to decay. In practice, we operationalize $S(p)$ using fast cheminformatics heuristics 
-(RDKit valence checks, BRICS rules) that enforce plausible structures. More detailed models 
-could extend $S(p)$ to incorporate semiempirical energy estimates or experimentally derived 
-lifetimes.
-
-\subsection{Simulation Examples}
-Applying the SDA/GA procedure to organic fragments yields results analogous to the string 
-experiments. High-stability motifs dominate the population, while recombination continually 
-generates low-frequency variants, maintaining a fat-tailed distribution of molecules. Entropy 
-collapses as selection pressure drives convergence, yet diversity remains higher under 
-recombination than under concatenation, reflecting ongoing exploration of chemical space. 
-These dynamics mirror nature’s own exploration of chemical possibility: vast combinatorial 
-search space is sampled non-ergodically, biased toward persistent structures.
-
-\subsection{Interpretation}
-This chemical instantiation highlights the central claim of SDA: selection emerges not from 
-an externally defined fitness function, but from persistence. In GA terms, fitness is 
-\emph{calculated} by the environment. In practice, octet completion, steric constraints, and 
-reaction kinetics determine which molecules last long enough to be sampled again. Thus, the 
-SDA/GA framework offers a naturalistic model of molecular evolution, one that unifies symbolic 
-cheminformatics with dynamical systems principles.
 
 \section{Chemical SDA/GA Simulation}
 
 \subsection{Methods}
+To extend the symbolic SDA/GA framework into the chemical domain, we reused the same minimal simulation loop with two modifications. First, symbolic string elements were replaced with SMILES fragments drawn from a small set of base compounds (e.g., \texttt{C}, \texttt{CC}, \texttt{O}, \texttt{CO}), representing a rudimentary pool of prebiotic building blocks. Molecules were represented as SMILES strings and manipulated using the RDKit toolkit \cite{landrum2006rdkit}. Recombination was implemented through BRICS-based fragmentation and reassembly \cite{degen2008art}, ensuring valence plausibility and avoiding chemically impossible bonds. Mutation was modeled as single-site perturbations, analogous to copying errors or diffusion-induced reactions.
 
-To extend the symbolic SDA/GA framework into the chemical domain, we reused the same minimal simulation loop with only two modifications. First, symbolic string elements were replaced with SMILES fragments drawn from a small set of base compounds (e.g., \texttt{C}, \texttt{CC}, \texttt{O}, \texttt{CO}, etc.), representing a rudimentary pool of prebiotic building blocks. Second, instead of assigning fixed stability values, we introduced a callable stability function $S(p)$ that estimates the persistence of a compound from molecular features. For demonstration purposes, this was implemented as a function of heavy atom count with heuristic boosts for chemically plausible motifs such as carboxylates, esters, and amides. In this formulation, fitness is not supplied externally, but arises from chemical plausibility as encoded in stability, thereby aligning with the SDA principle that selection emerges from persistence rather than externally imposed objectives.  
+Second, stability values were no longer fixed but estimated by a callable function $S(p)$ that reflects persistence. In practice, we used simple cheminformatics heuristics (heavy atom count with boosts for motifs such as carboxylates, esters, and amides). More detailed models could incorporate semiempirical energy estimates, kinetic barriers, solvent effects, or experimentally measured lifetimes. In this way, fitness is not externally imposed but arises from the environment’s stability constraints, consistent with the SDA principle that selection emerges from persistence.
 
-Molecules were represented as SMILES strings and manipulated using the RDKit cheminformatics toolkit \cite{landrum2006rdkit}. Recombination was implemented through BRICS-based fragmentation and reassembly \cite{degen2008art}. Our approach aligns with recent methodological surveys on best practices for genetic algorithms in molecular discovery \cite{janet2023bestpractices}.
+All other aspects of the loop remained unchanged: base fragments were replenished each generation, new compounds were formed by recombination and mutation, and expiration times were determined by $S(p)$. This allows the chemical simulation to be understood as a direct extension of symbolic SDA, with minimal changes distinguishing abstract informational dynamics from physically plausible chemical dynamics.
 
-All other aspects of the algorithm were left unchanged. As in the symbolic case, base fragments were replenished each generation, new compounds were formed through recombination and mutation using BRICS rules, and expiration times were assigned according to the stability function. This allows the chemical simulation to be understood as a natural extension of symbolic SDA, with only minimal changes distinguishing abstract informational dynamics from physical chemical dynamics.  
 
 \subsection{Results}
 
