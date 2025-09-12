@@ -475,59 +475,48 @@ This mapping shows that the SDA operators of mutation and recombination are not 
 
 
 \begin{table}[H]
-\caption{Mapping of classical organic reactions to SDA operators.\label{tab:chem-sda-operators}}
+\caption{Representative mappings between classical organic reactions and SDA operators.\label{tab:chem-sda-operators}}
 \begin{adjustwidth}{-\extralength}{0cm}
 \begin{tabularx}{\fulllength}{XXX}
 \toprule
-\textbf{Reaction Type} & \textbf{Chemical Example} & \textbf{SDA Operator Analogy} \\
+\textbf{Reaction Type} & \textbf{Representative Example} & \textbf{SDA Analogy} \\
 \midrule
-Substitution & 
-Aldehyde $\to$ imine (R--CHO + R'NH$_2$) &
-Mutation: substituent replaced while scaffold persists. \\
+Substitution / Redox & R--CHO $\leftrightarrow$ R--CH$_2$OH / R--COOH & Mutation: functional group replaced or bond order changed. \\
 \midrule
-Reduction & 
-Aldehyde $\to$ alcohol (R--CHO $\to$ R--CH$_2$OH) &
-Mutation: functional group altered by gain of H atoms. \\
+Addition & R--C=O + R'X $\to$ R--C(OH)X & Recombination if full fragment joins; mutation if small group adds. \\
 \midrule
-Oxidation & 
-Aldehyde $\to$ carboxylic acid (R--CHO $\to$ R--COOH) &
-Mutation: functional group altered by increase in bond order/O atoms. \\
+Acid--Base & R--NH$_2$ + H$^+$ $\leftrightarrow$ R--NH$_3^+$ & Mutation: reversible protonation state. \\
 \midrule
-Addition & 
-Nucleophilic addition to carbonyl (R--C=O + HX $\to$ R--C(OH)X) &
-Recombination if a whole fragment attaches; mutation if a small group adds. \\
+Polymerization & Amino acids $\to$ peptide chains & Recombination of motifs at reactive edges. \\
 \midrule
-Acid--Base & 
-Amines or carboxylic acids (R--NH$_2$ + H$^+$ $\leftrightarrow$ R--NH$_3^+$) &
-Mutation: reversible change in protonation state or charge. \\
+Isomerization & Keto--enol tautomerism & Mutation: structural rearrangement without new parts. \\
 \midrule
-Polymerization / Peptide Formation & 
-Amino acids $\to$ peptide chains &
-Recombination of motifs; edge-biased joining. \\
-\midrule
-Isomerization & 
-Keto--enol tautomerism, cis/trans isomers &
-Mutation: rearrangement of structure without adding/removing parts. \\
-\midrule
-Fragmentation / Dissociation & 
-Ester hydrolysis (R--COOR' $\to$ R--COOH + R'OH) &
-Inverse of recombination; persistence split across products. \\
+Fragmentation & Ester hydrolysis (R--COOR' $\to$ R--COOH + R'OH) & Inverse of recombination; persistence split across products. \\
 \bottomrule
 \end{tabularx}
 \end{adjustwidth}
 \end{table}
 
-In classical chemistry, these transformations are usually presented as synthesis pathways, each requiring specific reagents, catalysts, and conditions. In contrast, the SDA framework abstracts away from mechanistic detail to emphasize population-level dynamics: regardless of the stepwise route, persistence and recombination biases determine which motifs accumulate. Thus, SDA complements the traditional synthesis perspective by revealing how macro-level selection effects emerge from the distribution of possible transformations.
+In classical chemistry, reaction types are usually taught as synthesis pathways, 
+each requiring defined reagents, catalysts, and conditions. The SDA framework, 
+by contrast, abstracts these transformations into population-level operators. 
+Rather than focusing on the mechanistic sequence of steps, SDA emphasizes how 
+persistence and recombination biases determine which motifs accumulate over time. 
+In this way, SDA complements the traditional synthesis perspective by revealing 
+how macro-level selection effects emerge from the distribution of possible 
+transformations.  
 
+Table~\ref{tab:chem-sda-operators} lists representative mappings between 
+classical reaction classes and SDA operators. To illustrate, 
+Figure~\ref{fig:mutation-recombination}a shows a \textit{mutation} event in 
+which ethanol (CCO) is converted to isopropanol (CC(C)O), a local substitution 
+that alters stability while preserving the scaffold. 
+Figure~\ref{fig:mutation-recombination}b shows a \textit{recombination} event: 
+COCCO and CCOC(=O)C combine to yield CCOC, joining fragments from different 
+parents into a new motif. These cases highlight the two main operator types: 
+mutations correspond to local functional modifications, while recombinations 
+generate novelty by linking distinct building blocks.
 
-The abstract operators in Table~\ref{tab:chem-sda-operators} can be illustrated with specific examples. 
-Figure~\ref{fig:mutation-recombination}a shows a \textit{mutation} event, within our
-simulation framework, in which ethanol CCO is converted to isopropanol CC(C)O, 
-a local substitution that preserves the scaffold while altering stability. 
-Figure~\ref{fig:mutation-recombination}b demonstrates a \textit{recombination} event: 
-COCCO and CCOC(=O)C combine to produce CCOC (dimethyl ether). 
-These cases exemplify how mutations correspond to local functional changes, 
-while recombinations join fragments from different parents to generate novel motifs. 
 
 
 \begin{figure}[H]
@@ -687,190 +676,86 @@ This perspective also clarifies the often-misused notion of “top-down causatio
 \section{Discussion and Implications}
 
 \subsection{Open-Endedness and Computation}
-SDA can be understood as a Markov process on an effectively infinite state space. 
-Unlike equilibrium models that converge to fixed points, the SDA dynamics continually 
-expand the accessible state space by recombination and mutation. In this sense, 
-Kauffman’s “adjacent possible” becomes quantifiable: each generation explores a 
-countable, probabilistic frontier of assemblies. The search is the optimization, 
-with no prespecified target.  
+SDA can be viewed as a Markov process on an effectively unbounded state space. 
+Unlike equilibrium models that converge to fixed points, SDA dynamics continually expand the frontier of accessible motifs through recombination and mutation. 
+Kauffman’s “adjacent possible” thus becomes quantifiable: each generation samples a probabilistic frontier rather than searching for a target.  
 
-This perspective connects SDA to computation. Just as genetic programming 
-demonstrated that variation, selection, and recombination can evolve nontrivial 
-algorithms, SDA suggests that matter itself can evolve universal computation. 
-In Lloyd’s view, the universe computes bottom–up via bit flips governed by 
-physical laws. SDA, in contrast, represents a self-modifying computation driven 
-by a feedback loop between persistence landscapes and assembly dynamics, 
-generative rather than merely simulative.  
+This perspective links SDA to computation. Genetic programming showed that variation and selection can evolve nontrivial algorithms; SDA suggests that matter itself can evolve universal computation. 
+Where Lloyd portrays the universe as computing via bottom–up bit flips, SDA represents a self-modifying computation driven by feedback between persistence landscapes and assembly dynamics—generative rather than merely simulative.  
 
 \subsection{The Evolutionary Ladder}  
-The SDA/GA perspective helps to situate chemical evolution within a broader ladder of dynamical processes that may bridge chemistry and biology. At the base lies \textit{persistence}: some motifs survive longer than others. Persistence enables \textit{catalysis}, where stable motifs influence the production rates of other compounds. With further reinforcement, \textit{autocatalysis} arises, as motifs begin to promote their own formation. Only at a higher rung does \textit{replication} appear, once templating and copying mechanisms become possible. Beyond replication, motifs can acquire specific \textit{functions} in metabolic or structural roles, eventually coalescing into the integrated networks characteristic of \textit{biology}.  
+SDA/GA situates chemical evolution within a broader ladder of processes that bridge chemistry and biology. 
+At the base lies \textit{persistence}: some motifs survive longer than others. Persistence enables \textit{catalysis}, which may reinforce \textit{autocatalysis}. 
+Only later does \textit{replication} appear, followed by \textit{function} and finally the integrated networks of \textit{biology}.  
 
-This framing highlights that replication is not the foundation of evolution but one rung in a continuum that begins with persistence and extends upward through catalysis, autocatalysis, and functional integration. The chemical SDA simulations correspond to the earliest stages, demonstrating that persistence imbalances alone are sufficient to initiate evolutionary dynamics.  
+Replication is therefore not the foundation of evolution but one rung in a continuum. 
+Our chemical simulations correspond to the earliest stages, showing that persistence imbalances alone are sufficient to launch evolutionary trajectories.  
 
 \subsection{Echoes in Biology}  
+Persistence-driven selection recurs across biology. At the genomic level, \textit{selfish elements} such as transposons persist because they survive long enough to bias inheritance. 
+\textit{Codon usage bias} similarly reflects stability in translational dynamics.  
 
-The principle of persistence-driven selection does not end with chemistry but recurs at multiple levels of biological organization. At the genetic level, \textit{selfish elements} such as transposons and introns propagate not because they enhance organismal fitness, but because they persist in genomic lineages long enough to bias inheritance. Similarly, \textit{codon usage bias} reflects stability effects in translational dynamics: codons that are more robust to errors or that align with abundant tRNAs persist more readily, shaping the genetic code over evolutionary time.  
+At the organismal level, longevity traits extend survival beyond reproduction, biasing population outcomes in ways captured by Price’s equation. 
+Such persistence scaffolds cultural transmission and cooperative behavior, much as stable motifs scaffold new chemistry. 
+Ecological persistence provides another parallel: keystone species stabilize communities and reshape the landscape of possibilities.  
 
-At the level of organisms and populations, persistence manifests in traits such as longevity and life-history strategies. Price’s equation formalizes how traits that extend survival beyond reproductive years can bias the survival and reproduction of others, aligning with SDA’s emphasis on persistence as a population-level driver. Longevity may therefore act as a scaffold for cultural transmission, cooperative behavior, and catalytic roles in social or ecological systems, much as stable motifs scaffold chemical innovations. Keystone species provide a parallel ecological example, since their persistence stabilizes entire communities and reshapes the probability landscape for other species.  
+Across levels, the same feedback—stability $\to$ persistence $\to$ skewed sampling—recurs, suggesting that the logic observed in chemical simulations reflects a general evolutionary principle.  
 
-In each of these contexts, persistence skews the distribution of possibilities, creating emergent selection without an external programmer. The same feedback loop of stability leading to persistence, persistence leading to population skew, and skew biasing future interactions recurs across scales from molecules to ecosystems. These echoes suggest that the mechanisms demonstrated in chemical simulations reflect a more general evolutionary logic embedded in natural systems.
+\subsection{Hardware–Software Dichotomy in Origins Models}
+Origins-of-life models often invoke a hardware/software split, with chemistry as hardware and sequences as software. 
+This framing underlies the RNA world, where RNA is cast as both catalyst and code. 
+Yet it leaves unexplained how integrated systems like the ribosome–genome complex could arise.  
 
+SDA reframes the issue. In SDA/GA, persistence acts on physical structures that are simultaneously substrates and probabilistic “programs.” 
+A molecule is both hardware (with a lifetime) and software (biasing future assemblies). 
+This removes the need for a leap between layers and shows how computation can emerge mechanistically from persistence.  
 
+\subsection{Genotype–Phenotype Integration and the Role of Persistence}
+The genotype–phenotype split is usually taken as axiomatic, yet its origins remain obscure. 
+SDA/GA suggests that before replication, persistence alone fulfills both roles: stable motifs are physical entities that endure, and their persistence biases sampling as if they were templates.  
 
-\subsection{Hardware--Software Dichotomy in Origins Models}
+This helps circumvent problems of “irreducible complexity.” 
+Partial motifs need not be fully functional; if they are stable enough, they remain in circulation and scaffold the emergence of new functions. 
+Once catalytic or structural effects arise, they can enhance persistence and eventually dominate over stability alone, marking the transition from pre-Darwinian persistence-driven dynamics to Darwinian evolution proper.  
 
-A recurrent theme in origins-of-life literature is the analogy to a Turing machine, 
-where hardware and software are treated as separable layers. In this view, chemistry 
-supplies the hardware, while informational sequences or programs evolve on top of it. 
-This perspective is echoed in the RNA world hypothesis, where RNA is cast as both the 
-hardware (structural and catalytic roles) and the software (sequence-encoded information). 
-Yet the dichotomy often leaves unexplained how integrated systems such as the 
-ribosome--genome complex could arise without invoking a leap from hardware to software.  
+\subsection{Why Uneven Stability Landscapes Are Generic}
+Could a universe exhibit uniform persistence across all motifs? Combinatorially, such landscapes are vanishingly rare. 
+Most stability functions, composed of additive and multiplicative physical contributions, yield heterogeneous spectra with pockets of high persistence. 
+Valence and geometric constraints further prune assembly space, concentrating viability in structured regions.  
 
-Stability-Driven Assembly (SDA) reframes the problem. In SDA/GA, there is no external 
-distinction between hardware and software: persistence bias acts simultaneously on the 
-physical substrate and on the informational patterns it embodies. A molecule is both a 
-physical entity with a lifetime and a probabilistic “program” that shapes future 
-assemblies by virtue of its persistence. This feedback closes the gap between matter 
-and information, showing how computation emerges mechanistically from stability 
-imbalances without requiring a prior separation of hardware and software layers.  
-From this perspective, the evolution of integrated systems such as the ribosome becomes 
-more plausible: persistence first preserves stable folds, motifs, and assemblies, which 
-are then co-opted into roles that appear informational or programmatic only in hindsight.  
-
-\subsection{Genotype--Phenotype Integration and the Role of Persistence}
-
-A central puzzle in evolutionary theory is how genotype and phenotype became 
-decoupled yet interdependent: sequences (genotypes) specify structures and functions 
-(phenotypes), while phenotypes in turn shape which genotypes persist. In many models 
-this separation is treated as axiomatic, leaving unexplained how a dual system could 
-arise from purely physical beginnings.  
-
-SDA/GA provides a different starting point. In an SDA framework, persistence acts 
-directly on the physical assemblies themselves, with no distinction between 
-genotype and phenotype. A molecule or motif is both a physical entity with a 
-lifetime and a template for future interactions by virtue of its persistence. 
-Before replication and coding emerge, there is no need to posit an explicit 
-genotype–phenotype mapping: persistence ensures that stable motifs accumulate and 
-bias the sampling process, effectively ``standing in'' for both.  
-
-This perspective helps circumvent long-standing conceptual obstacles. Complex 
-systems do not require fully functional precursors in order to evolve. Partial or 
-incomplete motifs can remain in circulation if they are simply stable enough, and 
-their persistence allows them to recombine into larger, potentially functional 
-assemblies. What might otherwise be framed as a problem of ``irreducible complexity'' 
-becomes a natural consequence of persistence bias: stable intermediates survive long 
-enough to scaffold the emergence of new functions.  
-
-Once functional effects emerge, they may reinforce or even surpass stability alone. 
-If a catalytic or structural role increases persistence more than chemical stability 
-would by itself, then fitness begins to be shaped by function as well as longevity. 
-This transition marks the shift from pre-Darwinian persistence-driven dynamics to 
-Darwinian evolution proper, where genotypes and phenotypes coevolve under 
-selection pressures that combine both stability and function.
-
-
-\subsection{On the Genericity of Uneven Stability Landscapes}
-
-A natural question is whether a universe could exhibit a near-uniform distribution of
-stabilities across possible assemblies. Combinatorially, such landscapes are highly
-atypical. Let $\mathcal{S}$ denote the set of all stability assignments 
-$S:P\!\to\!\mathbb{R}_{\ge 0}$ over a (very large) pattern set $P$. Under broad
-priors—e.g., i.i.d.\ draws from continuous distributions, or sums of many weakly
-dependent energetic and steric contributions—almost all $S\in\mathcal{S}$ yield
-\emph{heterogeneous} stability spectra. Uniform or near-uniform assignments occupy a
-negligible measure subset of $\mathcal{S}$ because they require fine-tuned cancellations
-among many underlying factors.
-
-Three generic causes favor uneven landscapes:
-(i) \textit{Additivity with dispersion}: stability often sums multiple contributions
-(bond strengths, sterics, solvation, barriers), so by the central limit effect and
-order statistics, extremes (high-stability motifs) inevitably appear as $|P|$ grows.
-(ii) \textit{Multiplicative/noisy gating}: rates and lifetimes frequently combine
-multiplicatively (Arrhenius-like or barrier-limited processes), producing log-normal
-or heavy-tailed variation rather than uniformity.
-(iii) \textit{Constraint sparsity}: valence, geometry, and compatibility constraints
-prune large swaths of assembly space while concentrating viability in structured
-regions, inducing pockets of high persistence.
-
-Consequently, in any universe where interactions occasionally produce stable compounds,
-the \emph{typical} outcome is a locally uneven stability landscape. SDA requires no
-fine tuning to exploit this: persistence imbalances arise by default, skew population
-frequencies, and thereby induce emergent roulette-wheel sampling. Uniform stability
-would suppress SDA-like dynamics, but such a landscape is combinatorially unlikely.
-In open, driven environments where energy flow and mixing generate non-equilibrium
-conditions, these uneven pockets are expected to recur, making SDA dynamics likely
-to emerge in many local settings.
-
+This explains why SDA-like dynamics emerge generically: stable motifs almost always exist and skew population distributions by default. 
+Uniformity would suppress SDA, but it is nongeneric and fragile.  
 
 \subsection{Persistence as Open-Ended Optimization}
+Because SDA is equivalent to a GA, it inherits the universality of GAs as search procedures. 
+The difference is that classical GAs optimize an explicit fitness function, while SDA optimizes nothing external. 
+Persistence itself is the criterion: structures that last longer are sampled more often, biasing the search toward longevity.  
 
-By demonstrating the equivalence of SDA to a genetic algorithm, we can appeal to a
-well-established result: GAs are universal search procedures with the capacity,
-in principle, to locate global optima within sufficiently explored search spaces.
-The key distinction is that classical GAs optimize an \textit{explicitly defined}
-fitness function, whereas SDA optimizes nothing external. Instead, the only
-“objective” is persistence itself: assemblies that survive longer automatically
-gain more sampling weight, biasing the search toward motifs that maximize
-longevity.  
+This makes SDA an open-ended optimization process: not directed toward a solution but toward enduring structure. 
+The result is systematic accumulation of order and information without teleology.  
 
-This reframes SDA as an open-ended optimization process. It is not directed toward
-a predefined solution, but continually searches for ways to make the parts of the
-universe endure as long as possible under prevailing conditions. Persistence
-becomes the implicit criterion shaping trajectories through assembly space,
-favoring structures that balance stability and generativity. The result is a
-global bias toward order and information accumulation without any teleology or
-external programmer. In this sense, SDA shows how nature performs optimization
-without an objective, discovering “what works” solely through the feedback loop
-of survival and recombination.
+\subsection{Fine-Tuning as an Emergent Illusion}
+Cosmological debates often invoke fine-tuning for complexity and life \cite{rees2000six, davies2006goldilocks}. 
+From the SDA perspective, no fine-tuning is needed. 
+Uniform persistence would forbid order, but such landscapes are combinatorially negligible. 
+Given any uneven distribution, SDA dynamics amplify persistence imbalances into structured, evolving populations.  
 
-
-\subsection{Why Uniform Populations Are Combinatorially Atypical}
-
-Consider $N$ identical balls (instances) placed into $k$ bins (motifs). Each population histogram is an integer composition of $N$ into $k$ parts. The number of such distributions is $\binom{N+k-1}{k-1}$. The \emph{exactly uniform} distribution is a \emph{single} point among these possibilities. Because non-uniform distributions dominate combinatorially, any open, interacting system that produces and removes instances will generically realize \emph{uneven} population profiles.
-
-\paragraph{Uniformity versus Genesis Events.}  
-Thermodynamics tends to drive well-mixed systems toward uniform distributions, which is why chemistry textbooks emphasize equilibrium concentrations. Yet at the scale of a genesis event—whether the Big Bang or the rapid quench of a new chemical environment—the combinatorial odds overwhelmingly favor non-uniformity. There is only one exactly uniform distribution, but vastly many ways to be non-uniform. Once interactions themselves reinforce these differences (by granting longer-lived motifs greater persistence), the system enters the regime of Stability-Driven Assembly. In this sense, SDA/GA dynamics are not an exotic exception but the generic expectation in any universe where stability imbalances and stochastic interactions coexist.
-
-
-\subsection{Fine-Tuning as an Emergent Illusion}  
-
-The apparent fine-tuning of our universe for complexity and life has often been discussed in cosmology, most prominently in Rees’ \textit{Just Six Numbers} \cite{rees2000six} and Davies’ \textit{The Goldilocks Enigma} \cite{davies2006goldilocks}.  
-From the SDA perspective, however, fine-tuning is not required. In a perfectly uniform system, where all motifs have equal persistence, no population skew would arise: entropy would maximize immediately and no long-lived structures could accumulate.  
-Such uniformity, however, is fragile and nongeneric.  
-As the balls-in-bins analogy illustrates, there is only one way to achieve uniformity but countless ways to achieve non-uniformity.  
-Given any non-uniform persistence distribution, SDA dynamics immediately come into play: stable motifs survive longer, accumulate more copies, and bias future interactions.  
-
-From within such a system, the resulting trajectory appears exquisitely tuned for order and evolution.  
-In reality, no external tuning is required.  
-Persistence imbalances are the generic case, and it is precisely these imbalances that drive apparent teleology.  
-Thus what appears as fine-tuning is better understood as the emergent consequence of population-reinforced persistence in a stochastic universe.  
-
+To observers within such a system, outcomes appear exquisitely tuned for order. 
+In reality, apparent fine-tuning is simply the emergent consequence of population-reinforced persistence in a stochastic universe.  
 
 
 \section{Conclusions}
 
-This work has advanced \textit{Stability-Driven Assembly} (SDA) as a concrete mechanism by which selection-like dynamics can emerge in the absence of explicit fitness functions or dedicated replicators. The core mechanism is simple: persistence imbalances skew the population, and that skew feeds back to parent sampling so that longer-lived motifs are chosen more often for subsequent interactions. In expectation, this implements the equivalent of roulette–wheel selection. Thus, the loop \emph{create $\rightarrow$ persist $\rightarrow$ sample} constitutes a natural genetic algorithm (SDA/GA), with stability playing the role of fitness supplied by the environment rather than by a programmer.
+This work advances \textit{Stability-Driven Assembly} (SDA) as a concrete mechanism by which selection emerges without explicit fitness functions or replicators. The principle is simple: persistence imbalances skew the population, and skew feeds back into sampling so that longer-lived motifs are chosen more often. In expectation, this loop—\emph{create $\rightarrow$ persist $\rightarrow$ sample}—implements the equivalent of roulette–wheel selection, a natural genetic algorithm (SDA/GA) where fitness is supplied by the environment rather than by a programmer.  
 
-The chemical instantiation demonstrates this mechanism in practice. Final-population histograms show oligopolistic dominance by a few scaffolds; the two–motif evolution analysis reveals schema competition and eventual convergence to a highly persistent scaffold family; entropy and diversity traces exhibit early expansion followed by consolidation; and the final rank–abundance curve is heavy–tailed, with a small number of winners and a long tail of rare species. Together, these observations are the characteristic signatures of selection acting on a generative process: novelty is continually produced, but long-term residence time determines which motifs accumulate.
+Chemical simulations demonstrate these dynamics in practice. Populations evolve toward oligopolistic dominance of a few scaffolds; entropy and diversity expand and then contract as persistent motifs consolidate; and rank–abundance curves acquire heavy tails with a handful of dominant motifs and many rare ones. These are hallmarks of selection acting on a generative process: novelty is continually introduced, but only persistent structures accumulate.  
 
-These results stand in contrast to equilibrium analyses (e.g., constant–rate, well–mixed models in the spirit of MAK), which are linearized to ensure mathematical tractability and therefore tend to suppress the very feedbacks that drive open-ended evolution. In SDA/GA, effective rates are nonuniform because stability differs across motifs; persistence imbalances bias the population and hence future sampling. What appears as a steady state in equilibrium settings is, in SDA/GA, the moving target of an evolving distribution shaped by selection, turnover, and replacement.
+This contrasts with equilibrium approaches (e.g., constant-rate models in the spirit of MAK), which suppress feedbacks by construction. In SDA/GA, effective rates are nonuniform because stability differs across motifs, making the “steady state” itself an evolving distribution.  
 
-\subsection{Limitations}
-Our implementation deliberately isolates the population–level mechanism and makes several simplifying assumptions. The stability function $S(p)$ is heuristic rather than derived from first–principles thermodynamics or explicit kinetics; operators (recombination and single–site mutation) abstract multi–step synthesis pathways; the system is effectively well–mixed with constant replenishment; and explicit solvent effects, transport, and residence–time distributions are not modeled. These simplifications are appropriate for clarifying mechanism but limit quantitative interpretation.
+Several limitations follow from the simplifying assumptions used here: heuristic stability functions, abstracted operators, well-mixed dynamics, and the omission of solvent or kinetic detail. Future work should address these through multi-run statistics, richer $S(p)$ grounded in thermodynamics or kinetics, expanded reaction classes (acid–base cycles, isomerization, polymerization), and experimental tests in open, driven reactors where persistence can be directly measured.  
 
-\subsection{Future Work}
+Finally, the SDA/GA perspective reframes information not as a prior substance but as an emergent property of population dynamics. Structured regularities accumulate because persistence biases which motifs endure and recombine. In this sense, order and information growth arise as natural consequences of persistence-driven dynamics, offering a unifying principle that connects chemistry, computation, and biology.  
 
-Several extensions follow naturally from this work. A first direction is to conduct multi-run statistical analyses, quantifying variability across independent trials with identical hyperparameters and testing sensitivity to parameters such as interaction count, replenishment rate, mutation probability, and initial seed. A second avenue is to enrich the stability function $S(p)$ beyond the current heuristic formulation, grounding it in more realistic physical and chemical principles. Candidate approaches include semiempirical or DFT-based energy estimates, incorporation of activation barriers and solvent corrections, and microkinetic models that incorporate residence-time distributions.  
-
-Chemically, the model can be expanded to include additional classes of reactions beyond simple recombination and mutation. Acid–base cycles, isomerization kinetics, polymerization with chain-length and end-group effects, as well as dissociation and reversible transformations, would all allow a more faithful mapping between the SDA operators and real chemical processes. Complementing these theoretical extensions, an experimental roadmap can be envisioned: an open, driven reactor system with periodic feed–flush cycles, controlled energy or catalyst inputs, and continuous monitoring through MS, LC–MS, or NMR could directly measure abundance skew, entropy and diversity trajectories, and scaffold turnover. Such experiments would allow calibration of $S(p)$ against observed lifetimes and persistence data.  
-
-
-\subsection{Information as an Evolving Property}
-
-The SDA/GA perspective suggests a restrained but important claim about information: it is not a prerequisite substance imposed on matter, but an \emph{emergent property of population dynamics} shaped by persistence and stochastic creation. As distributions become skewed by stability, structured regularities accumulate and are propagated by the very feedback that produced them. In this sense (and as argued more generally in our prior work), information arises from the coupling of generative processes with selection pressures, rather than from an externally specified target.
-
-In sum, SDA/GA provides a minimal, mechanistic pathway by which chemistry can exhibit evolutionary search: stability differences induce population skew; skew induces effective selection; and selection, coupled to ongoing creation, yields both novelty and order. By grounding this loop in chemical symbol space, we have shown how a natural genetic algorithm can emerge from persistence alone, and we have outlined concrete experimental and theoretical steps to test, refine, and extend this framework.
 
 \section{Simulation Code}
 
