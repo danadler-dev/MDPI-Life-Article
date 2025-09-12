@@ -63,8 +63,9 @@ $^{1}$ \quad dan@danadler.com}
 %=================================================================
 % Abstract (Do not insert blank lines, i.e. \\) 
 \abstract{
-This paper presents Stability-Driven Assembly (SDA), a framework in which selection emerges from persistence imbalances rather than externally specified fitness. In SDA, assemblies are created stochastically and persist according to stability; longer-lived motifs become overrepresented and more likely to participate in future interactions, yielding fitness-proportional sampling in expectation—i.e., a natural genetic algorithm. We instantiate SDA in chemical symbol space using fragment recombination and single-site mutations with a heuristic stability function. Simulations produce oligopolistic population structures, convergence of scaffold families, heavy-tailed rank–abundance distributions, and characteristic entropy/diversity dynamics consistent with selection. We contrast these findings with equilibrium analyses (e.g., constant-rate models), which suppress selection-driven evolution. The results support the view that persistence differences alone can produce GA-like search in chemical populations and suggest experimental routes to probe stability-biased evolution under non-equilibrium conditions.
+This paper presents Stability-Driven Assembly (SDA), a framework in which selection emerges from persistence imbalances rather than externally specified fitness. In SDA, assemblies are created stochastically and persist according to stability; longer-lived motifs become overrepresented and more likely to participate in future interactions, yielding fitness-proportional sampling in expectation—that is, a natural genetic algorithm (SDA/GA). We instantiate SDA in chemical symbol space using fragment recombination and single-site mutations with a heuristic stability function. Simulations produce oligopolistic population structures, convergence of scaffold families, heavy-tailed rank–abundance distributions, and characteristic entropy/diversity dynamics consistent with selection. We contrast these findings with equilibrium analyses (e.g., constant-rate models), which suppress selection-driven evolution. We propose that SDA/GA is not only a model of chemical dynamics but a universal systemic process: in any universe where stochastic assembly, replenishment, and differential persistence coexist, populations are inevitably skewed and selection-like dynamics emerge. This reframes the central dogma that evolution requires DNA and replication, suggesting instead that replication is one rung in a broader ladder that begins with persistence, catalysis, and autocatalysis. SDA/GA thus provides a unifying principle linking chemistry, computation, and biology, and predicts that the emergence of information-rich order is not contingent but an inherent outcome of physical law.
 }
+
 
 % Keywords
 \keyword{Stability-Driven Assembly; Genetic Algorithms; Emergent computation; Information dynamics; Origins of life; Astrobiology; Teleology; Persistence bias; Open-ended evolution}
@@ -125,7 +126,13 @@ The pattern interaction operation, denoted by $\oplus$, is defined as a string c
 
 The probability of selecting a pattern $p$ for interaction is proportional to its frequency in the population. This creates a feedback mechanism: patterns with higher stability persist longer, becoming more abundant, which increases their probability of participating in interactions.
 
-The original SDA formulation emphasizes string concatenation as the sole pattern-forming operation. In what follows, we generalize the interaction to a recombination operator with an optional mutation step, and then examine whether the core properties of SDA are preserved under this extension. Instead of:
+The original SDA formulation emphasizes string concatenation as the sole 
+pattern-forming operation. In what follows, we generalize the interaction 
+to a recombination operator with an optional mutation step, and then examine 
+whether the core properties of SDA are preserved under this extension. 
+We refer to this generalized version as \textit{SDA/GA}, since the dynamics 
+are formally equivalent to those of a genetic algorithm while retaining 
+persistence as the implicit fitness measure. Instead of:
 \[
 p_{\text{new}} = p_1 \oplus p_2,
 \]
@@ -141,9 +148,9 @@ p_{\text{new}} =
 p_{\text{new}} & \text{with probability } 1-\mu.
 \end{cases}
 \]
-This change does not alter the selection mechanism: persistence 
-$S(p)$ still determines
-residence time and thus induces roulette–wheel selection in expectation.
+This change does not alter the selection mechanism: persistence $S(p)$ still 
+determines residence time and thus induces roulette–wheel selection in expectation.
+
 
 \subsection{Population and Stability Distributions}
 
@@ -256,9 +263,31 @@ S(p) =
 \end{cases}
 \end{equation}
 
-These parameters were fixed across all experiments, ensuring
-that observed differences arose from the interventions rather than changes in
+These parameters were fixed in the symbolic experiments below, ensuring that the observed differences arose from the interventions rather than changes in
 the baseline setup.
+
+Figure~\ref{fig:sda-loop} illustrates how these parameters operate within the
+symbolic SDA/GA loop. Relenishment and expiration define the active population, 
+stability values skew motif abundance, and roulette-wheel sampling drives
+biased parent selection. Interactions (concatenation or recombination) then
+produce new motifs that re-enter the pool, closing the feedback cycle. 
+This diagram highlights how persistence alone induces effective selection
+pressure without an explicit fitness function.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{SDA-Sym.png}
+    \caption{Symbolic SDA/GA loop in ABC space. 
+    Base elements are replenished and unstable motifs expire, forming the current population. 
+    Stability values ($S=50,30,1$) skew motif abundance, producing a biased distribution (pie chart). 
+    Random selection operates by roulette wheel sampling proportional to this abundance. 
+    Selected motifs undergo interaction (concatenation in SDA, recombination in GA), 
+    generating new assemblies that enter the next population. 
+    This feedback cycle: stability $\to$ persistence $\to$ population skew $\to$ biased sampling yields emergent fitness-proportional selection without an explicit fitness function.}
+    \label{fig:sda-loop}
+\end{figure}
+
 
 \subsection{Simulation Results}
 
@@ -333,7 +362,7 @@ emerging naturally without an explicit fitness function.
 We also tested the effect of introducing low-probability, single-site mutations during recombination. 
 These mutations serve as a simple model of stochastic perturbations such as copying errors or 
 diffusion events. As expected, mutation did not qualitatively alter the dynamics: entropy still 
-collapsed and high-stability motifs remained dominant. Mutations did not disrupt the overall reduction in entropy, confirming that the emergent selection mechanism is robust to stochastic noise.
+collapsed and high-stability motifs remained dominant. Mutations did not disrupt the overall reduction in entropy, confirming that the  emergent selection mechanism is robust to stochastic noise.
 
 \section{Genetic Algorithms and Natural Genetic Algorithms}
 
@@ -380,9 +409,25 @@ by the environment (valence/duet–octet satisfaction, sterics, thermodynamics, 
 reactor residence time). Thus, SDA \emph{builds fitness into persistence}, whereas GA 
 \emph{supplies fitness explicitly}.
 
-One of the most widely known illustrations of genetic algorithms is Dawkins’ “weasel” program \cite{dawkins1986blind}. In this example, random sequences of characters evolve toward a fixed target phrase (“METHINKS IT IS LIKE A WEASEL”) through repeated variation and selection. The program demonstrates how cumulative selection can rapidly find a solution compared to random search, but it does so by imposing an externally defined goal and fitness criterion. While useful as a teaching tool, the weasel program exemplifies target-driven search, in contrast to the open-ended dynamics we seek to model here.
+One of the best-known illustrations of genetic algorithms is Dawkins’ 
+“weasel” program \cite{dawkins1986blind}, where random sequences evolve 
+toward a fixed target phrase through repeated variation and selection. 
+It shows how cumulative selection outperforms random search, but only 
+because an externally defined goal and fitness function are imposed. 
+This target-driven design contrasts with the open-ended dynamics modeled 
+here.  
 
-A closer analogy to SDA than Dawkins’ “weasel” is jazz improvisation \cite{{adler2025jazz}}. In jazz, musicians explore an open-ended space of notes and motifs without a fixed target. Motifs that resonate are repeated, developed, exchanged and and recombined, while those that do not fit disappear. Over time, structure and themes emerge from this stochastic yet biased search. In SDA, stochastic interactions explore assembly space, persistence bias favors stable motifs, and new motifs accumulate without any pre-specified goal. Both processes are creative in the same sense: they discover what works by letting persistence guide variation. This analogy highlights why SDA differs fundamentally from target-driven search models, illustrating how novelty and information can emerge from feedback between persistence and stochastic exploration.
+An analogy closer to SDA is jazz improvisation \cite{adler2025jazz}. 
+Musicians explore an open-ended space of motifs within a predefined harmonic space
+without a fixed target; 
+those that resonate are repeated, varied, and recombined, while others
+fade. Structure emerges from this stochastic but biased search. 
+Similarly, SDA explores assembly space, persistence bias amplifies 
+stable motifs, and novelty accumulates without a prespecified goal. 
+Both processes discover order by letting persistence guide variation, 
+illustrating how information can emerge from feedback rather than 
+external targets.
+
 
 \section{Application to Organic Chemistry}
 
