@@ -211,38 +211,44 @@ where $\Delta H_{\text{create}}$ is typically positive and $\Delta H_{\text{pers
 
 \subsection{Continuum Limit and Fokker-Planck Analogy}
 
-In the continuum limit, the SDA update can be expressed in a Fokker-Planck \cite{gardiner2009} stochastic system equation:
+In the continuum limit, the SDA update can be written in a Fokker-Planck form \cite{gardiner2009}:
 \begin{equation}
 \frac{\partial P(x,t)}{\partial t}
-= \underbrace{- \nabla \cdot \big[ A(x)\, P(x,t) \big]}_{\text{Persist / drift}}
+= \underbrace{- \nabla \cdot \big[ A[P](x,t)\, P(x,t) \big]}_{\text{Persist / drift}}
 + \underbrace{D \nabla^2 P(x,t)}_{\text{Create / diffusion}}.
 \end{equation}
-where $P(x,t)$ is the probability density of observing pattern $x$ at time $t$. 
-The variable $x$ serves as a coordinate in the (possibly abstract) assembly space 
-of motifs, acting as the continuous analogue of the discrete pattern index $p$. 
-In this way, $P(x,t)$ generalizes the discrete population distribution $P_t(p)$ 
-to a probability density over assembly space.
+Here $P(x,t)$ is the probability density of observing motif $x$ at time $t$, 
+serving as the continuous analogue of the discrete distribution $P_t(p)$. 
+The drift term $A[P](x,t)$ is not fixed externally but depends functionally on $P$: 
+it reflects the evolving stability landscape shaped by the current population. 
 
-
-Here $A(x) \approx \nabla S(x)$ plays the role of a stability-driven drift 
-field (which itself evolves over time as new stable patterns emerge), while 
-$D$ represents the stochasticity of random assembly and disassembly. The first-order differential operator ($\nabla$) captures directed probability drift toward 
-regions of higher stability, while the second-order operator ($\nabla^2$) 
-represents diffusion-like probability distribution spreading towards uniformity
-as a result of random creation and disassembly.
+Thus, although the equation resembles a linear Fokker-Planck, it is in fact nonlinear and history-dependent. 
+The first-order operator ($\nabla$) represents persistence-driven drift toward regions of higher stability, 
+while the second-order operator ($\nabla^2$) captures diffusion-like spreading from stochastic creation. 
+This functional dependence makes SDA dynamics intrinsically nonequilibrium and distinguishes them from 
+classical Fokker-Planck systems where drift and diffusion are externally specified. 
+Formally, SDA belongs to the class of nonlinear Fokker-Planck systems sometimes called McKean--Vlasov equations \cite{mckean1966, villani2009}, 
+where drift depends self-consistently on the evolving distribution.  
 
 As demonstrated in our earlier intervention experiments \cite{adler_sda}, 
-\textit{Persist} (stability imbalances) are the intrinsic driver of entropy 
-reduction and pattern persistence, whereas \textit{Create} acts as a 
+\textit{Persist} (stability imbalances) is the intrinsic driver of entropy 
+reduction and pattern persistence, whereas \textit{Create} serves as a 
 uniform, ergodic source of novelty that cannot by itself generate order.  
+In the continuum formulation, these two contributions map onto drift and diffusion, 
+but unlike the classical case, the drift field is a functional of the evolving 
+population itself.  
 
-This formulation differs fundamentally from the classical Fokker-Planck 
-equation of equilibrium statistical mechanics. The drift is not externally 
-specified but emerges endogenously from the evolving distribution, making the 
-process intrinsically nonlinear and non-equilibrium. As a result, the 
-traditional solution techniques based on eigenfunctions and steady-state 
-distributions are not directly applicable, underscoring the novelty of the SDA 
-approach.
+This makes the SDA equation fundamentally different from the classical 
+Fokker-Planck of equilibrium statistical mechanics. In standard treatments, 
+drift and diffusion are externally specified, yielding linear operators that 
+permit eigenfunction expansions and closed-form steady states. By contrast, 
+in SDA the drift emerges endogenously from the evolving distribution $P(x,t)$, 
+rendering the process nonlinear, feedback-driven, and intrinsically nonequilibrium.  
+As a result, traditional solution techniques based on linear operators and 
+stationary distributions are not directly applicable, highlighting the need 
+for alternative approaches in the SDA framework.
+
+
 
 \subsection{Symbolic Simulation Model Parameters}
 
@@ -554,6 +560,15 @@ Note that some of these mutations and recombinations do not correspond to single
 
 This schematic illustrates the SDA/GA cycle instantiated in chemical space. As in the symbolic ABC case, persistence bias amplifies the abundance of more stable motifs, which then dominate recombination events and seed increasingly complex products. The point is not to capture mechanistic detail but to show how stability values alone, when coupled with stochastic assembly and replenishment, are sufficient to generate skewed population structures and emergent selection dynamics. In this sense, chemical SDA/GA provides a bridge between abstract population models and realistic prebiotic chemistry.
 
+\subsection{Stability and Environmental Drivers}
+
+In SDA, stability $S(p)$ is defined as persistence across generations—the expected number of time steps a pattern remains active in the population. This differs from conventional chemical usage, where “stability” usually refers to thermodynamic quantities (e.g., Gibbs free energy) or kinetic barriers (activation energies). While such energetic factors underlie persistence, SDA abstracts them into a single lifetime parameter that governs how long motifs continue to participate in the generative process. In this sense, $S(p)$ is not an energy unit but a phenomenological timescale of survival, informed in practice by thermodynamics, kinetics, and environment.
+
+Environmental drivers are what set these persistence times. Real chemical systems rarely explore assembly space uniformly: reactions depend on conditions such as temperature gradients, pH or redox cycles, porous flows, cofactors and catalysts, or external inputs like UV light, electrical discharges, and magnetic fields. Such drivers keep systems away from equilibrium and make persistence differentials consequential. By contrast, laboratory chemistry is usually designed to run to equilibrium, at which point experiments are considered complete—helping explain why reaction networks are seldom framed in evolutionary terms. SDA emphasizes the opposite: in open, driven contexts, replenishment and fluctuation turn heterogeneous persistence into an evolutionary process.  
+
+From this perspective, stability-as-persistence is not an alternative to chemical energetics but a population-level abstraction of their combined effect under environmental drive. Wherever stochastic assembly, replenishment, and differential persistence coexist, biased sampling and selection-like dynamics naturally emerge.
+
+
 
 \section{Chemical SDA/GA Simulation}
 
@@ -591,11 +606,12 @@ From a GA perspective, this concentration illustrates how roulette-wheel selecti
     \label{fig:chem-top-evo}
 \end{figure}
 
-The trajectories of the two leading motifs are shown in Figure~\ref{fig:chem-top-evo}. At generation 200, the population is split between two scaffolds: an NCN-bearing polyol (17.5\%) and a related ester-like variant (14.5\%). Both share the same hydroxylated carbon backbone with an appended amine chain, differing only in the functional group attached to the central scaffold.  
+Figure~\ref{fig:chem-top-evo} traces the trajectories of the two dominant scaffolds.  
+At generation 200, the population is divided between an NCN-bearing polyol (17.5\%) and a related ester-like variant (14.5\%), both sharing a hydroxylated backbone with an appended amine chain.  
 
-By generation 600, the competition has shifted. A recursive oligomer that elaborates the NCN branch with an additional polyol–amine extension rises to 23.7\% of the pool, while the ester-like variant persists at 19.5\%. This phase illustrates how SDA dynamics preserve a common schema while exploring more complex recombinants.  
+By generation 600, a recursive oligomer elaborating the NCN branch expands to 23.7\%, while the ester-like motif holds at 19.5\%. This phase reflects SDA’s tendency to preserve a common schema while generating more complex derivatives.  
 
-By generation 1000, however, the balance tips decisively. The simpler ester-like scaffold dominates nearly half the population (45.1\%), while the more elaborate recursive oligomer declines to 15.0\%. From a GA perspective, this trajectory illustrates schema competition: multiple variants arise from a shared template, but persistence imbalances weight selection toward those with the most favorable stability. From a chemical perspective, the result shows that moderate substituents (ester-like O–C(=O)–O groups) can outcompete bulkier recursive elaborations, leading to convergence on motifs that maximize both stability and generativity. The outcome thus exemplifies the SDA principle that evolutionary search favors motifs which balance structural richness with long-term persistence.
+By generation 1000, the simpler ester-like scaffold dominates nearly half the pool (45.1\%), while the recursive oligomer declines to 15.0\%. The trajectory illustrates schema competition: multiple variants emerge from a shared template, but persistence imbalances ultimately favor the scaffold that best balances stability and generativity. Chemically, this shows how modest substituents (ester-like O–C(=O)–O groups) can outperform bulkier elaborations, driving convergence on motifs that are both robust and reproductively generative.
 
 
 \begin{figure}[H]
@@ -683,13 +699,34 @@ Kauffman’s “adjacent possible” thus becomes quantifiable: each generation 
 This perspective links SDA to computation. Genetic programming showed that variation and selection can evolve nontrivial algorithms; SDA suggests that matter itself can evolve universal computation. 
 Where Lloyd portrays the universe as computing via bottom–up bit flips, SDA represents a self-modifying computation driven by feedback between persistence landscapes and assembly dynamics—generative rather than merely simulative.  
 
-\subsection{The Evolutionary Ladder}  
-SDA/GA situates chemical evolution within a broader ladder of processes that bridge chemistry and biology. 
-At the base lies \textit{persistence}: some motifs survive longer than others. Persistence enables \textit{catalysis}, which may reinforce \textit{autocatalysis}. 
-Only later does \textit{replication} appear, followed by \textit{function} and finally the integrated networks of \textit{biology}.  
+\subsection{The Evolutionary Ladder Hypothesis}  
 
-Replication is therefore not the foundation of evolution but one rung in a continuum. 
-Our chemical simulations correspond to the earliest stages, showing that persistence imbalances alone are sufficient to launch evolutionary trajectories.  
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{SDA-ladder.png}
+\caption{\textbf{SDA Evolutionary Ladder.} A stepwise progression from persistence-only dynamics to Darwinian replication. 
+Rungs (bottom$\rightarrow$top): \emph{Persistence}—some motifs are longer-lived, biasing sampling; 
+\emph{Emergent Function}—incidental chemical properties begin to bias persistence and can become causal; 
+\emph{Catalysis}—functional motifs systematically lower barriers and direct assembly; 
+\emph{Autocatalysis}—motifs enhance their own production, forming self-reinforcing loops; 
+\emph{Replication}—sequence-specific copying makes information explicitly heritable. 
+The boxes at right give concise examples for each rung (e.g., diamond vs.\ graphite; carbonyl acidity; acid/base catalysis; the formose cycle; RNA templating). 
+Colors encode increasing organizational complexity.}
+\label{fig:sda-ladder}
+\end{figure}
+
+Figure~\ref{fig:sda-ladder} illustrates the evolutionary ladder hypothesis, a proposed continuum linking chemistry to biology. At the base lies \emph{persistence}: some motifs simply last longer than others. Diamonds outlast graphite under pressure, and stable scaffolds remain in circulation while unstable ones vanish. In this phase, persistence alone biases sampling, creating the first form of selection without function.  
+
+The next rung, \emph{emergent function}, arises when incidental chemical traits begin to influence persistence. For example, a carbonyl motif mutating into a carboxylic acid changes acidity, altering how it interacts with the environment. In SDA terms this is a single mutation, but chemically it shifts reactivity, allowing the motif to persist in contexts where neutrality would not. At this stage, properties are still largely correlated with persistence, but they begin to bias outcomes systematically.  
+
+A concrete example illustrates the transition from correlation to causation. Consider a carbonyl mutating into a carboxylic acid. The acid group can protonate bases and lower activation barriers, thereby catalyzing an unrelated condensation reaction that produces a more persistent ester or amide motif. In SDA terms, the first motif’s persistence is no longer merely correlated with stability: its functional effect causally increases the survival and reproduction of another motif. The second motif then rises in frequency not solely because of its intrinsic stability but because the acid’s \emph{phenotypic function} enabled its production. Function thus feeds directly into the feedback loop of persistence, transforming passive traits into causal drivers of selection.  
+
+This transition leads naturally to \emph{catalysis}, where motifs systematically lower activation barriers, channeling reaction pathways toward more efficient outcomes. Once catalysis is established, some motifs go further, entering \emph{autocatalysis}. In this rung, motifs not only stabilize others but reinforce their own production. The formose sugar cycle, for example, regenerates its own intermediates, creating a self-reinforcing lineage. Persistence is now coupled to self-maintenance.  
+
+Finally, \emph{replication} emerges when copying mechanisms become explicit and sequence-specific. At this rung, information is no longer implicit in persistence alone but is encoded in heritable structures such as RNA templates. Darwinian evolution proper begins only here, when variation, inheritance, and selection all operate together.  
+
+Seen as a continuum, replication is therefore not the foundation of evolution but one rung in a broader ladder that begins with persistence. Our simulations capture the earliest stages, showing that persistence imbalances alone can launch evolutionary trajectories, with phenotypic functions serving as the bridge from chemistry to biology.
+
 
 \subsection{Echoes in Biology}  
 Persistence-driven selection recurs across biology. At the genomic level, \textit{selfish elements} such as transposons persist because they survive long enough to bias inheritance. 
@@ -863,6 +900,16 @@ Nicolis, G.; Prigogine, I. \textit{Self-Organization in Nonequilibrium Systems: 
 Noble, D. \textit{A Theory of Biological Relativity: No Privileged Level of Causation.} Interface Focus \textbf{2012}, \textit{2}, 55–64.
 
 \bibitem{gardiner2009} Gardiner, C. W. (2009). \textit{Stochastic Methods: A Handbook for the Natural and Social Sciences} (4th ed.). Springer.
+
+\bibitem{mckean1966}
+McKean, H.P. 
+\textit{A Class of Markov Processes Associated with Nonlinear Parabolic Equations}. 
+Proceedings of the National Academy of Sciences \textbf{1966}, 56, 1907–1911. doi:10.1073/pnas.56.6.1907.
+
+\bibitem{villani2009}
+Villani, C. 
+\textit{Optimal Transport: Old and New}. Springer, Berlin, 2009. 
+(See Chapter 2 for nonlinear Fokker–Planck and McKean–Vlasov formulations.)
 
 \bibitem{adler_sda}
 Adler, D.
