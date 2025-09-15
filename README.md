@@ -1,4 +1,4 @@
-MDPI Life submission of "Stability-Driven Assembly: A Natural Genetic Algorithm and Pathway to Evolution".
+MDPI Life submission of "Stability-Driven Assembly as a Natural Genetic Algorithm".
 
 You can access the code and simulation results from the paper by opening the following colab notebook:
 
