@@ -63,7 +63,7 @@ $^{1}$ \quad dan@danadler.com}
 %=================================================================
 % Abstract (Do not insert blank lines, i.e. \\) 
 \abstract{
-This paper presents Stability-Driven Assembly (SDA), a framework in which selection emerges from persistence imbalances rather than externally specified fitness. In SDA, assemblies are created stochastically and persist according to stability; longer-lived motifs become overrepresented and more likely to participate in future interactions, yielding fitness-proportional sampling in expectation—that is, a natural genetic algorithm (SDA/GA). We instantiate SDA in chemical symbol space using fragment recombination and single-site mutations with a heuristic stability function. Simulations produce oligopolistic population structures, convergence of scaffold families, heavy-tailed rank–abundance distributions, and characteristic entropy/diversity dynamics consistent with selection. We contrast these findings with equilibrium analyses (e.g., constant-rate models), which suppress selection-driven evolution. We propose that SDA/GA is not only a model of chemical dynamics but a universal systemic process: in any universe where stochastic assembly, replenishment, and differential persistence coexist, populations are inevitably skewed and selection-like dynamics emerge. This reframes the central dogma that evolution requires DNA and replication, suggesting instead that replication is one rung in a broader ladder that begins with persistence, catalysis, and autocatalysis. SDA/GA thus provides a unifying principle linking chemistry, computation, and biology, and suggests that the emergence of information-rich order may be an inherent outcome of physical law.
+This paper presents Stability-Driven Assembly (SDA), a framework in which selection emerges from persistence imbalances rather than externally specified fitness. In SDA, assemblies are created stochastically and persist according to stability. Longer-lived motifs become overrepresented and more likely to participate in future interactions, yielding fitness-proportional sampling and resulting in a natural genetic algorithm (SDA/GA). We instantiate SDA in chemical symbol space using fragment recombination and single-site mutations with a heuristic stability function. Simulations produce oligopolistic population structures, convergence of scaffold families, heavy-tailed rank–abundance distributions, and characteristic entropy/diversity dynamics consistent with selection. We contrast these findings with equilibrium analyses (e.g., constant-rate models), which suppress selection-driven evolution. We propose that SDA/GA is not only a model of chemical dynamics but a universal systemic process: in any universe where stochastic assembly, replenishment, and differential persistence coexist, populations are inevitably skewed and selection-like dynamics emerge. This reframes the central dogma that evolution requires DNA and replication, suggesting instead that replication is one rung in a broader ladder that begins with persistence, catalysis, and autocatalysis. SDA/GA thus provides a unifying principle linking chemistry, computation, and biology, and suggests that the emergence of information-rich order may be an inherent outcome of physical law.
 }
 
 
@@ -79,22 +79,35 @@ One of the deepest questions in the origins of life research is how selection co
 
 In inanimate systems, patterns persist according to their stability under prevailing conditions. Diamonds outlast graphite under high pressure, and certain molecular motifs are more resilient in given chemical environments \cite{ruizmirazo2014}. Here we use motif to mean a distinct pattern—or, in chemical contexts, a distinct species. Such differences in longevity create implicit selection: stable structures naturally accumulate, biasing the population distribution. This principle of stability-driven selection may provide a bridge between non-living matter and evolving biospheres \cite{kauffman1993origins, hordijk2012autocatalytic, nghe2015prebiotic}.
 
-Multiple theoretical frameworks have addressed how complexity might emerge from abiotic systems. Autocatalytic-set theory shows how reaction networks can become self-sustaining \cite{kauffman1986autocatalytic, hordijk2011required}. Eigen hypercycles \cite{eigen} extend this idea to mutually reinforcing replicators, but still presuppose replication machinery. Fontana's artificial chemistry \cite{fontana1991algorithmic} and later digital artificial life platforms such as \textit{Tierra} and \textit{Avida} \cite{ray1992tierra, adami1994} demonstrated open-ended dynamics in abstract symbolic systems. More recently, Cronin’s chemputation approach has automated chemical synthesis \cite{cronin2024chemputation}, showing how chemistry can be controlled as code, although only under the guidance of an external programmer. The GARD model of lipid assemblies \cite{segre2000compositional, markovitch2012universal} and protocell ABMs \cite{damer2015coupled} demonstrate how compositional inheritance can arise in specific chemistries. Each of these frameworks contributes valuable insight, yet they remain tied to particular substrates or assume replication.
+Multiple theoretical frameworks have addressed how complexity might emerge from abiotic systems. Autocatalytic-set theory shows how reaction networks can become self-sustaining \cite{kauffman1986autocatalytic, hordijk2011required}. Eigen's hypercycles \cite{eigen} extend this idea to mutually reinforcing replicators, but still presuppose replication machinery. Fontana's artificial chemistry \cite{fontana1991algorithmic} and later digital artificial life platforms such as \textit{Tierra} and \textit{Avida} \cite{ray1992tierra, adami1994} demonstrated open-ended dynamics in abstract symbolic systems. More recently, Cronin’s chemputation approach has automated chemical synthesis \cite{cronin2024chemputation}, showing how chemistry can be controlled as code, although only under the guidance of an external programmer. The GARD model of lipid assemblies \cite{segre2000compositional, markovitch2012universal} and protocell ABMs \cite{damer2015coupled} demonstrate how compositional inheritance can arise in specific chemistries. Each of these frameworks contributes valuable insight, yet they remain tied to particular substrates or assume replication.
 
 Other perspectives highlight general physical drivers: preferential attachment in networks \cite{barabasi1999emergence}, dissipative adaptation in nonequilibrium thermodynamics \cite{prigogine1977self, england2015dissipative}, and work on evolutionary dynamics in chemical networks \cite{wu2012origin, nowak2006evolutionary}. Assembly Theory quantifies complexity as construction depth \cite{walker2023nature}, while constructor theory reformulates physics in terms of possible transformations \cite{deutsch2013constructor}. These approaches offer tools to measure or formalize complexity, but they do not by themselves explain how information-generating dynamics arise in real time.
 
 The phrase 'chemical evolution' is widely used in the literature to describe the progressive transformation of molecules into more complex structures under prebiotic conditions. Yet the term is often applied descriptively rather than mechanistically, leaving open the question of what underlying principle imparts directionality or selection to such processes. In particular, while many models demonstrate how complexity can arise in specific chemistries, a general account of how chemical systems move from undirected reaction networks to cumulative, evolutionary dynamics has remained elusive.
 
-Here, we introduce Stability-Driven Assembly (SDA) as a general framework in which selection emerges from persistence imbalances only. In SDA, each generation is shaped by two processes: stochastic creation of new assemblies and persistence or decay according to stability. This simple loop—create, mutate, persist—produces a feedback cycle in which stable motifs accumulate and bias future sampling. The effect is equivalent to roulette-wheel selection in a genetic algorithm, but without an externally imposed fitness function. In this sense, SDA behaves as a natural genetic algorithm (SDA/GA), in which physics supplies the fitness criterion through stability.
+This paper introduces Stability-Driven Assembly (SDA) as a framework in which 
+selection arises from persistence imbalances alone. Each generation is shaped 
+by two processes: stochastic creation of new assemblies and persistence or 
+decay according to stability. Together, these processes form a feedback cycle
+in which stable motifs accumulate and bias future sampling, effectively implementing roulette-wheel selection in the sense of a genetic algorithm (GA) 
+\cite{holland1975adaptation, adler1993marriage}, but without an externally
+imposed fitness function.
 
-The connection between algorithmic search and physical persistence has long been recognized. Hybrid search methods that combined genetic algorithms with simulated annealing were proposed as engineered ways to improve optimization \cite{adler1993marriage}. In the present work, we suggest that SDA can be viewed as nature’s counterpart to such hybrids: an endogenous union of physics and computation. Whereas artificial GAs depend on a programmer to specify the fitness function, SDA relies only on stability as the arbiter of persistence. What was once an engineered marriage of algorithms is revealed here as a natural union between matter and information.
-
-This paper investigates chemical implementations of SDA, showing through simulations that recombination and persistence alone suffice to generate GA-like behavior: novelty generation, oscillatory entropy, and diversity, heavy-tailed abundance distributions, and scaffold-level competition. Together, these results demonstrate how selection-like dynamics can emerge in purely chemical settings, bridging the gap between equilibrium chemistry and open-ended evolution.
-
+Applied to organic chemistry, SDA simulations with chemically meaningful
+recombinations and mutations show populations progressively dominated by
+increasingly stable compounds, driving the system toward order while
+occasional stochastic innovations trigger bursts of reorganization.
 
 \section{Stability-Driven Assembly (SDA)}
 
-A Stability-Driven Assembly (SDA) \cite{adler_sda} system is formally defined as a tuple $(E, P, S, R, I)$ where:
+A Stability-Driven Assembly (SDA) \cite{adler_sda} system consists of base elements $A, B, C, \dots$ that recursively combine into compounds represented as
+strings of unbounded length. The persistence of each compound is determined by its
+stability $S$: a compound with $S=30$ remains for 30 generations before elimination, while the patterns $S=1$ vanish after a single generation. 
+Expired motifs are removed without explicit reverse reactions and base
+elements are replenished at a constant rate each generation, ensuring
+continued exploration of assembly space. This setup parallels continuous-flow 
+stirred tank reactors (CFSTR) \cite{fogler1999chemical}, where reactants are
+continuously supplied to maintain non-equilibrium conditions. More formally, An SDA system is defined as a tuple $(E, P, S, R, I)$ where:
 \begin{itemize}
    \item $E = \{e_1, e_2, \ldots, e_n\}$ is a finite set of base elements
    \item $P$ is the set of all possible patterns formed by concatenating elements from $E$ and existing patterns
@@ -102,7 +115,6 @@ A Stability-Driven Assembly (SDA) \cite{adler_sda} system is formally defined as
    \item $R: E \rightarrow \mathbb{Z}^{+}$ is a replenishment function specifying how many copies of each base element are added per generation
    \item $I \in \mathbb{Z}^{+}$ is the number of interactions allowed per generation
 \end{itemize}
-
 The pattern interaction operation, denoted by $\oplus$, is defined as a string concatenation. When patterns $p_1$ and $p_2$ interact, they form a pattern $p_1 \oplus p_2$.
 
 \begin{algorithm}[H]
@@ -313,7 +325,7 @@ pressure without an explicit fitness function.
 
 \subsection{Simulation Results}
 
-We begin by comparing the final pattern distributions produced by the original SDA with concatenation and the generalized SDA/GA with recombination. Both systems show a strong deviation from the unconstrained case: instead of a uniform spread of short strings, high-stability motifs dominate the population. In the SDA system, concatenation drives the emergence of long-repeated motifs such as \texttt{ABCABA}, which concentrate a lot of the probability mass. In the recombination-based GA variant, the same dominant motifs appear, but the distribution shows a heavier tail: many low-frequency variants persist alongside the stable core (Figures~\ref{fig:concat-patterns},~\ref{fig:ga-patterns}). This broader spectrum reflects the ability of recombination to continuously inject mosaic offspring and maintain a pool of rare types, while pure concatenation channels more strongly into layered repeats.
+We begin by comparing the final pattern distributions produced by the original SDA with concatenation and the generalized SDA/GA with recombination. Both systems show a strong deviation from the unconstrained case: instead of a uniform spread of short strings, high-stability motifs dominate the population. In the SDA system, concatenation drives the emergence of long-repeated motifs such as \texttt{ABCABA}, which accumulate a lot of the probability mass. In the recombination-based GA variant, the same dominant motifs appear, but the distribution shows a heavier tail: many low-frequency variants persist alongside the stable core (Figures~\ref{fig:concat-patterns},~\ref{fig:ga-patterns}). This broader spectrum reflects the ability of recombination to continuously inject mosaic offspring and maintain a pool of rare types, while pure concatenation channels more strongly into layered repeats.
 
 \begin{figure}[H]
     \centering
@@ -405,7 +417,7 @@ minimizing error in a regression task or maximizing throughput in a design probl
 pressure is supplied by the problem designer.
 
 
-By contrast, in a Stability-Driven Assembly (SDA) system, the selection mechanism is not externally
+In contrast, in a Stability-Driven Assembly (SDA) system, the selection mechanism is not externally
 programmed but emerges intrinsically from persistence. Each pattern has a stability $S(p)$, 
 which determines how long it remains in the population. Patterns with higher stability survive
 longer, become more frequent, and are therefore more likely to be sampled for further
@@ -427,7 +439,7 @@ by the environment (valence/duet–octet satisfaction, sterics, thermodynamics, 
 reactor residence time). Thus, SDA \emph{builds fitness into persistence}, while GA
 \emph{supplies fitness explicitly}.
 
-One of the best-known illustrations of genetic algorithms is the Dawkins 'weasel' program \cite{dawkins1986blind}, where random sequences evolve
+One well-known illustration of genetic algorithms is the Dawkins 'weasel' program \cite{dawkins1986blind}, where random sequences evolve
 toward a fixed target phrase through repeated variation and selection. 
 It shows how cumulative selection outperforms random search, but only
 because an externally defined goal and fitness function are imposed. 
@@ -436,9 +448,7 @@ here.
 
 An analogy closer to SDA is jazz improvisation \cite{adler2025jazz}. 
 Musicians explore an open-ended space of motifs within a predefined harmonic space
-without a fixed target; 
-those that resonate are repeated, varied, and recombined, while others
-fade. Structure emerges from this stochastic but biased search. 
+without a fixed target. Motifs that resonate are repeated, varied, and recombined, while others fade. Musical structure thus emerges from this stochastic but biased search. 
 Similarly, SDA explores assembly space, persistence bias amplifies
 stable motifs, and novelty accumulates without a prespecified goal. 
 Both processes discover order by letting persistence guide variation, 
@@ -483,7 +493,7 @@ structured, evolving system.
 
 The mapping in Table~\ref{tab:chem-sda-operators} illustrates how common classes of organic reactions can be interpreted within the SDA/GA framework. Substitution, reduction and oxidation reactions all correspond to \textit{mutations}, since they alter functional groups while preserving the underlying scaffold. Addition reactions may play either role: the attachment of a small atom or group is best regarded as mutation, whereas the joining of two larger fragments constitutes recombination.  
 
-Acid--base reactions are a particularly simple but important form of mutation. Protonation and deprotonation cycles alter charge states and stability without changing the covalent backbone, yet they have profound effects on persistence in different environments. Similarly, isomerization represents a mutational step in which the connectivity or geometry is reshuffled, sometimes uncovering stability differences that bias persistence even though no atoms are gained or lost.  
+Acid-base reactions are a particularly simple but important form of mutation. Protonation and deprotonation cycles alter charge states and stability without changing the covalent backbone, yet they have profound effects on persistence in different environments. Similarly, isomerization represents a mutational step in which the connectivity or geometry is reshuffled, sometimes uncovering stability differences that bias persistence even though no atoms are gained or lost.  
 
 Polymerization, including peptide bond formation, provides a canonical example of recombination. Here, motifs are linked through edge-biased joining to form larger assemblies. Once formed, such chains introduce new levels of persistence and complexity, laying the groundwork for the higher rungs of the evolutionary ladder. Fragmentation and dissociation serve as the inverse of recombination, redistributing persistence across smaller motifs.  
 
@@ -660,7 +670,7 @@ The structure of the novelty and abundance is summarized in Figure~\ref{fig:chem
 
 \subsection{Interpretation}
 
-Together, these results show that chemical SDA recapitulates the dynamics of a natural GA. Population skew arises spontaneously from persistence imbalances: compounds that survive longer contribute disproportionately to the parent pool, creating effective roulette-wheel selection without an explicit fitness function. This mechanism is evident in the histogram and motif trajectories (Figures~\ref{fig:chem-compound-hist}, \ref{fig:chem-top-evo}), which show oligopolistic dominance and scaffold-level competition.  
+These results show that chemical SDA mirrors the dynamics of a natural GA. Population skew arises spontaneously from persistence imbalances: compounds that survive longer contribute disproportionately to the parent pool, creating effective roulette-wheel selection without an explicit fitness function. This mechanism is evident in the histogram and motif trajectories (Figures~\ref{fig:chem-compound-hist}, \ref{fig:chem-top-evo}), which show oligopolistic dominance and scaffold-level competition.  
 
 System-level traces (Figures~\ref{fig:chem-entropy}--\ref{fig:chem-novel}) explain how this outcome emerges: entropy and diversity expand initially but collapse as selection narrows the space, while novelty remains high as new motifs continually replace base fragments. The final rank–abundance distribution (Figure~\ref{fig:chem-rank}) underscores that these dynamics are not idiosyncratic but follow statistical patterns seen across complex adaptive systems.  
 
@@ -669,7 +679,7 @@ Even with a simplified stability function, the most abundant compounds exhibit c
 
 \subsection{Equilibrium Models versus Selection-Driven Evolution}
 
-It is useful to contrast these results with equilibrium-based analyses such as those presented by \textbf{Mass–Action Kinetics (MAK)} models
+It is useful to contrast these results with equilibrium-based analyses such as those presented by Mass–Action Kinetics (MAK) models
 \cite{fogler1999chemical,TuranyiTomlin2014}. In order to render the governing equations linear and analytically tractable, equilibrium models typically assume constant reaction rates and well-mixed dynamics. This assumption ensures mathematical stability, but also suppresses the very features that drive open-ended evolution. With constant rates, all species are treated as equivalent participants in a Markovian flow, and the long-term behavior is dominated by equilibrium concentrations determined by stoichiometry rather than by persistence differentials. In such a setting, once equilibrium is reached, no further directional change occurs.
 
 In contrast, the SDA framework does not impose constant rates or equilibrium conditions. Instead, the effective lifetime of each compound depends on its stability, so turnover is inherently nonuniform. This creates persistence imbalances: more stable motifs accumulate, while less stable ones vanish, skewing the population distribution and weighting the parent-selection process. As demonstrated in the simulations above, this skew is precisely what produces evolutionary search dynamics. Entropy and diversity expand initially but then collapse as a few stable motifs dominate, novelty is continually generated through recombination, and population abundance assumes a heavy-tailed form reminiscent of ecological communities. None of these features emerges from an equilibrium analysis with constant rates, because such models erase the role of selection in shaping the trajectory of the system.
@@ -692,7 +702,7 @@ It is also important to distinguish chemical SDA from supervised learning and fr
 
 The feedback structure shown in Figure~\ref{fig:top-down} provides a mechanistic explanation for how the GA-like search spontaneously emerges in chemical SDA. In conventional genetic algorithms, roulette-wheel selection is imposed externally: the algorithm samples parents in proportion to a programmer-defined fitness function. In SDA, no such programmer is required. Instead, stability imbalances ensure that some compounds persist longer than others. Persistence in turn biases the probability distribution over the population, which then guides future interactions. 
 
-This feedback loop closes the causal chain: the compounds shape the distribution, the distribution shapes sampling, and sampling determines which compounds are likely to interact. In effect, the selection pressure is not imposed top-down, but emerges bottom-up from the persistence differences within the population. The result is indistinguishable in practice from roulette-wheel selection, yet it arises naturally from the dynamics of the system.
+This feedback loop closes the causal chain: the compounds shape the distribution, the distribution shapes sampling, and sampling determines which compounds are likely to interact. In effect, the selection pressure is not imposed top-down, but emerges bottom-up from the persistence differences within the population. The result is indistinguishable from roulette-wheel selection, yet it arises naturally from the dynamics of the system.
 
 This perspective also clarifies the often misused notion of top-down causation \cite{noble_dance}. There is no need to posit a mystical programmer or abstract force directing the search. What appears as a top-down influence of the probability distribution on individual elements is mechanistically explained by the accumulation of persistence imbalances at the population level. Stability alone suffices to generate the feedback necessary for open-ended, GA-like evolution.
 
@@ -765,42 +775,44 @@ feedback can couple physical and informational roles within a single framework.
 
 \subsection{Genotype–Phenotype Integration and the Role of Persistence}
 
-The genotype–phenotype distinction is usually taken as axiomatic, yet its origins remain unclear.  
-In SDA/GA, before true replication arises, persistence alone can play both roles: 
-stable motifs are physical entities that endure (a phenotypic trait), and their persistence biases sampling 
+The genotype-phenotype distinction is generally taken as axiomatic, but its origins are unclear.  
+In SDA/GA, before true replication arises, persistence alone can play both roles:
+stable motifs are physical entities that endure (a phenotypic trait) and their persistence biases sampling
 as if they were templates (a genotypic role).  
 
-This perspective helps to soften the problem of “irreducible complexity.”  
-Partial motifs need not be fully functional; if they are stable enough, they remain in circulation and 
+This perspective helps to soften the problem of 'irreducible complexity'.  
+Partial motifs need not be fully functional; if they are stable enough, they remain in circulation and
 can scaffold the emergence of more elaborate functions.  
-As catalytic or structural effects appear, they feed back to increase persistence, shifting the system 
+As catalytic or structural effects appear, they feed back to increase persistence, shifting the system
 upward along the evolutionary ladder (Fig.~\ref{fig:sda-ladder}).  
-In this framing, Darwinian replication is not a sharp discontinuity but a rung that builds upon 
-persistence-driven dynamics already in place.
+In this framing, Darwinian replication is not a sharp discontinuity but a rung that builds upon persistence-driven dynamics already in place.
 
 
 \subsection{Why Uneven Stability Landscapes Are Generic}
-Could a universe exhibit uniform persistence across all motifs? Combinatorially, such landscapes are vanishingly rare. 
-Most stability functions, composed of additive and multiplicative physical contributions, yield heterogeneous spectra with pockets of high persistence. 
-Valence and geometric constraints further prune assembly space, concentrating viability in structured regions. This explains why SDA-like dynamics emerge generically: stable motifs almost always exist and skew population distributions by default. 
-Uniformity would suppress SDA, but it is nongeneric and fragile.  
+
+Could a universe exhibit uniform persistence across all motifs? Such a
+perfectly balanced landscape is combinatorially improbable and thermodynamically uninteresting: There is only one maximum-entropy configuration, whereas there are vastly many uneven ones. Physical constraints
+such as valence and geometry further restrict the assembly space, channeling
+viability into structured regions. As a result, SDA-like dynamics arise
+generically, since stable motifs almost always exist and bias population
+distributions by default.
+
 
 \subsection{Persistence as Open-Ended Optimization}
 Because SDA is equivalent to a GA, it inherits the universality of GAs as search procedures. 
 The difference is that classical GAs optimize an explicit fitness function, while SDAs optimize nothing external. 
-Persistence itself is the criterion: structures that last longer are sampled more often, biasing the search toward longevity.  
-
-This makes SDA an open-ended optimization process: not directed toward a solution but toward enduring structure. 
+Persistence itself is the criterion: structures that last longer are sampled more often, biasing the search toward longevity. This makes SDA an open-ended optimization process: not directed toward a solution but toward enduring structure. 
 The result is a systematic accumulation of order and information without teleology.  
 
 \subsection{Fine-Tuning as an Emergent Illusion}
-Cosmological debates often invoke fine-tuning for complexity and life \cite{rees2000six, davies2006goldilocks}. 
-From the SDA perspective, no fine-tuning is needed. 
-Uniform persistence would forbid order, but such landscapes are combinatorially negligible. 
-Given any uneven distribution, SDA dynamics amplifies persistence imbalances in structured, evolving populations.  
 
-To observers within such a system, outcomes appear exquisitely tuned for order. 
-In reality, apparent fine-tuning is simply the emergent consequence of population-reinforced persistence in a stochastic universe.  
+From the SDA perspective, appeals to fine-tuning for complexity and life
+\cite{rees2000six, davies2006goldilocks} are unnecessary. Persistence
+imbalances are generic, and their amplification produces structured, evolving
+populations. The order that emerges in any SDA universe is necessarily
+shaped by its particular stability landscape and therefore always appears
+fine-tuned, even though it arises as a natural consequence of persistence in
+a stochastic system.
 
 
 \section{Conclusions}
@@ -813,7 +825,15 @@ This perspective contrasts with equilibrium approaches (e.g., constant-rate mode
 
 The present formulation remains simplified, relying on heuristic stability functions, abstracted operators, well-mixed dynamics, and the omission of solvent or kinetic detail. Future work should extend these models with multi-run statistics, richer $S(p)$ grounded in thermodynamics and kinetics, additional reaction classes (acid–base cycles, isomerization, polymerization), and experimental tests in open, driven reactors where persistence can be directly measured.  
 
-Finally, SDA/GA reframes information not as a prior substance but as an emergent outcome of population dynamics. Structured regularities accumulate because persistence biases which motifs endure and recombine. In this sense, order and information arise as natural consequences of persistence-driven dynamics, offering a unifying principle that connects chemistry, computation, and biology.  
+SDA/GA reframes information not as a pre-existing substance but as an emergent 
+property of population dynamics. Regularities accumulate because persistence 
+biases which motifs endure and recombine, so that information itself evolves 
+through biased exploration. From a population perspective, this process is 
+indistinguishable from evolution: order and information emerge as stable 
+motifs persist longer, recur more often, and proliferate within the population 
+through persistence-driven selection, pointing to a common principle linking 
+chemistry, computation, and biology.
+
 
 
 \section{Simulation Code}
@@ -936,103 +956,103 @@ Walker, S.I.; Cronin, L.; et al. \textit{Assembly theory explains and quantifies
 Deutsch, D.; Marletto, C. \textit{Constructor theory of information.} Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences \textbf{2015}, \textit{471}, 20140540.
 
 % Reference 22
+\bibitem{holland1975adaptation}
+Holland, J.H. \textit{Adaptation in Natural and Artificial Systems}; University of Michigan Press: Ann Arbor, MI, USA, 1975.
+
+% Reference 23
 \bibitem{adler1993marriage}
 Adler, D. \textit{Genetic algorithms and simulated annealing: a marriage proposal}. Proceedings of the IEEE International Conference on Neural Networks, San Francisco, CA, USA, 1993; pp. 1759--1764. doi:10.1109/ICNN.1993.298712.
 
-% Reference 23
+% Reference 24
 \bibitem{adler_sda}
 Adler, D.
 \textit{Stability-Driven Assembly Theory}.
 SSRN Preprint, 2025. Available at: \url{https://dx.doi.org/10.2139/ssrn.5203036}. Submitted to \textit{Journal of Theoretical Biology}.
 
-% Reference 24
+% Reference 25
+\bibitem{fogler1999chemical}
+Fogler, H.S. \textit{Elements of Chemical Reaction Engineering} (3rd ed.). Prentice Hall, 1999.
+
+% Reference 26
 \bibitem{gardiner2009} Gardiner, C. W. (2009). \textit{Stochastic Methods: A Handbook for the Natural and Social Sciences} (4th ed.). Springer.
 
-% Reference 25
+% Reference 27
 \bibitem{mckean1966}
 McKean, H.P. 
 \textit{A Class of Markov Processes Associated with Nonlinear Parabolic Equations}. 
 Proceedings of the National Academy of Sciences \textbf{1966}, 56, 1907–1911. doi:10.1073/pnas.56.6.1907.
 
-% Reference 26
+% Reference 28
 \bibitem{villani2009}
 Villani, C. 
 \textit{Optimal Transport: Old and New}. Springer, Berlin, 2009. 
 (See Chapter 2 for nonlinear Fokker–Planck and McKean–Vlasov formulations.)
 
-% Reference 27
-\bibitem{holland1975adaptation}
-Holland, J.H. \textit{Adaptation in Natural and Artificial Systems}; University of Michigan Press: Ann Arbor, MI, USA, 1975.
-
-% Reference 28
+% Reference 29
 \bibitem{goldberg1989genetic}
 Goldberg, D.E. \textit{Genetic Algorithms in Search, Optimization, and Machine Learning}; Addison-Wesley: Boston, MA, USA, 1989.
 
-% Reference 29
+% Reference 30
 \bibitem{koza1992genetic}
 Koza, J. R.
 \textit{Genetic Programming: On the Programming of Computers by Means of Natural Selection}.
 MIT Press, USA, 1992.
 
-% Reference 30
+% Reference 31
 \bibitem{dawkins1986blind}
 Dawkins, R. \textit{The Blind Watchmaker}; W.W. Norton: New York, NY, USA, 1986.
 
-% Reference 31
+% Reference 32
 \bibitem{adler2025jazz}
 Adler, D. \textit{Active Listening in Jazz}. Available online: \url{https://jazzintro.com}.
 
-% Reference 32
+% Reference 33
 \bibitem{brown2004ga}
 Brown, N.; McKay, B.; Gilardoni, F.; Gasteiger, J.
 \textit{A graph-based genetic algorithm and its application to the multiobjective
 evolution of median molecules.}
 J. Chem. Inf. Comput. Sci. 2004, 44, 1079--1087.
 
-% Reference 33
+% Reference 34
 \bibitem{lewis1998gp}
 Lewis, R. A.
 \textit{Genetic programming as a model for drug design.}
 J. Chem. Inf. Comput. Sci. 1998, 38, 651--657.
 
-% Reference 34
+% Reference 35
 \bibitem{jensen2019ga}
 Jensen, J. H.
 \textit{A graph-based genetic algorithm and generative model/GA hybrid for molecular discovery.}
 Chem. Sci. 2019, 10, 3567--3572.
 
-% Reference 35
+% Reference 36
 \bibitem{yoshikawa2018ga}
 Yoshikawa, N.; Terayama, K.; Sumita, M.; Homma, T.; Oono, K.; Tsuda, K.
 \textit{Population-based de novo molecule generation, using grammatical evolution.}
 Chem. Lett. 2018, 47, 1431--1434.
 
-% Reference 36
+% Reference 37
 \bibitem{fink2007gdb11}
 Fink, T.; Reymond, J.-L.
 \textit{Virtual exploration of the chemical universe up to 11 atoms of C, N, O, F:
 Assembly of 26.4 million structures (GDB-11).}
 J. Chem. Inf. Model. 2007, 47, 342--353.
 
-% Reference 37
+% Reference 38
 \bibitem{landrum2006rdkit}
 Landrum, G. (2006). \textit{RDKit: Open-source cheminformatics}. Available at: \url{http://www.rdkit.org}.
 
-% Reference 38
+% Reference 39
 \bibitem{degen2008art}
 Degen, J., Wegscheid-Gerlach, C., Zaliani, A., Rarey, M. (2008).
 \textit{On the art of compiling and using ‘drug-like’ chemical fragment spaces}.
 \textit{ChemMedChem}, 3(10), 1503–1507. https://doi.org/10.1002/cmdc.200800178
 
-% Reference 39
+% Reference 40
 \bibitem{janet2023bestpractices}
 Janet, J. P., Duan, C., Yang, T., Kulik, H. J. (2023).
 \textit{Determining best practices for using genetic algorithms in molecular discovery}.
 \textit{Journal of Chemical Physics}, 159(9), 091501. https://doi.org/10.1063/5.0158336
-
-% Reference 40
-\bibitem{fogler1999chemical}
-Fogler, H.S. \textit{Elements of Chemical Reaction Engineering} (3rd ed.). Prentice Hall, 1999.
 
 % Reference 41
 \bibitem{TuranyiTomlin2014}
